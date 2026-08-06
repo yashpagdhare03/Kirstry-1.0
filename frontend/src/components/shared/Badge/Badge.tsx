@@ -1,4 +1,4 @@
-import React, { type ReactNode } from 'react';
+import React, { type ReactNode, type CSSProperties } from 'react';
 import styles from './Badge.module.css';
 
 export interface BadgeProps {
@@ -6,6 +6,7 @@ export interface BadgeProps {
   variant?: 'default' | 'info' | 'success' | 'warning' | 'error';
   icon?: ReactNode;
   className?: string;
+  style?: CSSProperties;
 }
 
 export const Badge: React.FC<BadgeProps> = ({
@@ -13,6 +14,7 @@ export const Badge: React.FC<BadgeProps> = ({
   variant = 'default',
   icon,
   className = '',
+  style,
 }) => {
   const badgeClasses = [
     styles.badge,
@@ -21,7 +23,7 @@ export const Badge: React.FC<BadgeProps> = ({
   ].filter(Boolean).join(' ');
 
   return (
-    <span className={badgeClasses}>
+    <span className={badgeClasses} style={style}>
       {icon && <span className={styles.icon}>{icon}</span>}
       {children}
     </span>
