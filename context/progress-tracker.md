@@ -6,11 +6,11 @@ Update this file after every meaningful implementation change.
 
 ## Current Phase
 
-- **Phase 2: Frontend Setup & UI Development** — In Progress (Unit 11 of 22 completed)
+- **Phase 2: Frontend Setup & UI Development** — In Progress (Unit 12 of 22 completed)
 
 ## Current Goal
 
-- **Feature 12: Dashboard Page UI** (`context/feature-specs/12-dashboard-page.md`) — Implement real-time summary cards, quick POS action links, recent sales list, low stock warnings, and expiry alerts banner.
+- **Feature 13: Product Management Pages UI** (`context/feature-specs/13-product-pages.md`) — Implement product catalog table with search & category filters, barcode camera scanner modal, Open Food Facts auto-fill, add/edit product modal forms, and image upload.
 
 ---
 
@@ -48,37 +48,47 @@ Update this file after every meaningful implementation change.
 - React 19 + Vite + TypeScript, CSS custom properties dark mode tokens, 9 shared components, typed fetch API client, Vitest environment setup.
 
 ### ✅ Feature 11: Layout & Navigation UI (`11-layout-navigation.md`) — *Completed 2026-08-06*
-- **Desktop Sidebar Navigation**:
-  - Built [`frontend/src/components/layout/Sidebar.tsx`](file:///Users/thunder/Desktop/Kirstry-1.0/frontend/src/components/layout/Sidebar.tsx) (240px fixed width, logo brand header, Lucide React icons, active link highlighting, border-right separator)
-- **Top Application Header**:
-  - Built [`frontend/src/components/layout/TopBar.tsx`](file:///Users/thunder/Desktop/Kirstry-1.0/frontend/src/components/layout/TopBar.tsx) with dynamic URL path title mapping, notification bell with unread count badge (fetches `GET /api/alerts/unread-count`), and Radix UI user profile dropdown menu (`@radix-ui/react-dropdown-menu`)
-- **Mobile Bottom Navigation**:
-  - Built [`frontend/src/components/layout/BottomNav.tsx`](file:///Users/thunder/Desktop/Kirstry-1.0/frontend/src/components/layout/BottomNav.tsx) for `<768px` viewports with 5 primary tabs (Dashboard, Billing, Inventory, Khata, More popover drawer)
-- **App Shell & Page Stubs**:
-  - Built [`frontend/src/components/layout/MainLayout.tsx`](file:///Users/thunder/Desktop/Kirstry-1.0/frontend/src/components/layout/MainLayout.tsx) wrapping React Router `<Outlet />` with responsive content padding
-  - Created placeholder page stubs in `frontend/src/pages/` for all 9 application modules
+- Desktop fixed 240px sidebar, top application header with dynamic route titles and Radix UI profile menu, mobile 5-icon bottom navigation bar, React Router shell layout.
+
+### ✅ Feature 12: Dashboard Page UI (`12-dashboard-page.md`) — *Completed 2026-08-06*
+- **Dashboard Service & State Hook**:
+  - Built [`frontend/src/services/dashboard.ts`](file:///Users/thunder/Desktop/Kirstry-1.0/frontend/src/services/dashboard.ts) mapping backend `/api/dashboard/*` endpoints.
+  - Built [`frontend/src/hooks/useDashboard.ts`](file:///Users/thunder/Desktop/Kirstry-1.0/frontend/src/hooks/useDashboard.ts) handling parallel `Promise.all` metrics fetching, error handling, loading state, and `refreshDashboard()` refetcher.
+- **Store Overview Metric Cards Grid**:
+  - Total Products count (`summary.total_products`)
+  - Inventory Valuation (`₹total_inventory_value`)
+  - Low Stock Count (`summary.low_stock_count` with severity badge)
+  - Today's Sales Revenue (`₹today_sales_revenue` with completed order count)
+- **Quick POS Actions Bar**:
+  - Action buttons navigating to `/billing`, `/inventory`, `/products`, `/khata`
+- **Low Stock & Expiry Alert Feeds (2 Columns)**:
+  - Low stock items feed displaying item name, stock count vs low stock threshold, and status badge
+  - Expiring batches feed displaying batch number, expiry date, days remaining, and urgency badge (`1_day`, `3_days`, `7_days`)
+- **Recent Sales Transactions Table**:
+  - Table displaying invoice number (monospace), customer name, item count, total amount, payment mode badge (`cash`, `upi`, `credit`), and timestamp
 - **Verification & Builds**:
-  - `npm run test` passed 3/3 Vitest tests (including `Sidebar.test.tsx`)
+  - `npm run test` passed 4/4 Vitest tests (including `DashboardPage.test.tsx`)
   - `npm run build` succeeded cleanly with 0 TypeScript compilation errors
-  - DevTools MCP Verification: Verified layout across 3 viewport breakpoints (Desktop `1440x900`, Tablet `1024x768`, Mobile `375x667`)
+  - DevTools MCP Verification: Verified live dashboard connected to backend on `http://localhost:5173`
 
 ---
 
 ## In Progress
 
-- **Feature 12: Dashboard Page UI** (`context/feature-specs/12-dashboard-page.md`)
-  - Target: Implement real-time summary cards (`total_products`, `total_inventory_value`, `low_stock_count`, `today_sales_revenue`)
-  - Target: Implement quick action links (POS Billing, Stock-In, Add Customer, Create PO)
-  - Target: Implement recent sales list table
-  - Target: Implement low stock and expiry alerts banner
+- **Feature 13: Product Management Pages UI** (`context/feature-specs/13-product-pages.md`)
+  - Target: Implement product catalog view with search & category filtering
+  - Target: Implement add/edit product modal form
+  - Target: Implement Open Food Facts barcode lookup auto-fill
+  - Target: Implement barcode camera scanner integration (`html5-qrcode`)
+  - Target: Implement product image upload to Supabase Storage
 
 ---
 
 ## Next Up
 
-1. `12-dashboard-page.md` — Dashboard summary metrics, quick actions, alerts banner
-2. `13-product-pages.md` — Product catalog UI, barcode camera scanner modal, add/edit form
-3. `14-inventory-pages.md` — Stock-in, batch list, stock adjustment form, low stock view
+1. `13-product-pages.md` — Product catalog, barcode scanner, Open Food Facts auto-fill
+2. `14-inventory-pages.md` — Stock-in, batch list, physical count adjustment form
+3. `15-billing-pos-page.md` — POS billing counter, barcode fast-scan, bill summary, WhatsApp share invoice
 
 ---
 
@@ -90,15 +100,14 @@ Update this file after every meaningful implementation change.
 
 ## Architecture Decisions
 
-1. **Responsive Viewport Navigation**: Desktop viewports (`>=768px`) display the fixed 240px sidebar. Mobile viewports (`<768px`) hide the sidebar and render a fixed 5-icon bottom navigation bar with a Radix popover for secondary modules.
-2. **Dynamic Route Title Mapping**: TopBar listens to location changes and updates the header title dynamically to match the active module context.
+1. **Parallel Dashboard Metrics Fetching**: `useDashboard()` hook uses `Promise.all` to fetch summary metrics, low stock alerts, expiry alerts, and recent sales in a single parallel operation to minimize page loading latency.
 
 ---
 
 ## Session Notes
 
-- Frontend branch: `frontend`. Dev server port: `5173`.
-- Tests passing: 3/3 Vitest.
+- Frontend branch: `frontend`. Dev server port: `5173`. Backend port: `5001`.
+- Tests passing: 4/4 Vitest.
 
 ---
 

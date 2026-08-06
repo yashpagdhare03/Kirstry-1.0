@@ -3,7 +3,7 @@
 # 12 — Dashboard Page
 
 ## Status
-Not Started
+Completed
 
 ## Objective
 Implement the main shopkeeper dashboard showing stock summary cards, alert feeds, quick action buttons, and recent sales table.
@@ -30,10 +30,10 @@ Page Sections:
 3. Add skeleton loading state while API requests complete.
 
 ## Acceptance Criteria
-- [ ] Summary cards display live backend metrics accurately
-- [ ] Quick action buttons navigate to respective routes
-- [ ] Alert feeds display severity badges (`critical`, `warning`, `info`)
-- [ ] Dashboard layout is responsive across mobile and desktop viewports
+- [x] Summary cards display live backend metrics accurately
+- [x] Quick action buttons navigate to respective routes
+- [x] Alert feeds display severity badges (`critical`, `warning`, `info`)
+- [x] Dashboard layout is responsive across mobile and desktop viewports
 
 ## MCP Verification
 - Use `chrome-devtools-mcp` to capture screenshot of populated dashboard page
