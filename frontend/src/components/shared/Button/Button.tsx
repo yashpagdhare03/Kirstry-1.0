@@ -7,6 +7,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean;
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
+  fullWidth?: boolean;
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -16,25 +17,31 @@ export const Button: React.FC<ButtonProps> = ({
   isLoading = false,
   leftIcon,
   rightIcon,
+  fullWidth = false,
   className = '',
   disabled,
   ...props
 }) => {
-  const classNames = [
+  const buttonClasses = [
     styles.button,
     styles[variant],
     styles[size],
+    fullWidth ? styles.fullWidth : '',
     className,
   ].filter(Boolean).join(' ');
 
   return (
-    <button className={classNames} disabled={disabled || isLoading} {...props}>
+    <button
+      className={buttonClasses}
+      disabled={disabled || isLoading}
+      {...props}
+    >
       {isLoading ? (
-        <span className={styles.spinner} />
+        <span className={styles.spinner} role="status" aria-label="Loading" />
       ) : (
         <>
           {leftIcon && <span className={styles.icon}>{leftIcon}</span>}
-          {children}
+          <span>{children}</span>
           {rightIcon && <span className={styles.icon}>{rightIcon}</span>}
         </>
       )}

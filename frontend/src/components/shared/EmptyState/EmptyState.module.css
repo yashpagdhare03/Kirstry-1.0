@@ -8,12 +8,19 @@
   border: 1px dashed var(--border-default);
   border-radius: var(--radius-lg);
   background-color: var(--bg-surface);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 28px 16px;
+  }
 }
 
 .icon {
   color: var(--text-faint);
   margin-bottom: 12px;
-
   display: flex;
   align-items: center;
   justify-content: center;
