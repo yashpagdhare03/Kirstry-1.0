@@ -16,12 +16,18 @@
   max-width: 1400px;
   width: calc(100% - 240px);
   box-sizing: border-box;
+  transition: margin-left var(--transition-normal), width var(--transition-normal);
+}
+
+.collapsed {
+  margin-left: 68px;
+  width: calc(100% - 68px);
 }
 
 @media (max-width: 768px) {
   .mainContent {
-    margin-left: 0;
-    width: 100%;
+    margin-left: 0 !important;
+    width: 100% !important;
     padding: 16px;
     padding-bottom: 84px; /* Space for fixed bottom navigation bar */
   }

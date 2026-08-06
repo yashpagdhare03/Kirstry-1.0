@@ -10,6 +10,8 @@ import {
   TrendingUp,
   Settings,
   Store,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from 'lucide-react';
 import styles from './Sidebar.module.css';
 
@@ -30,17 +32,40 @@ export const navRoutes: NavRoute[] = [
   { path: '/settings', label: 'Settings', icon: <Settings size={20} strokeWidth={1.5} /> },
 ];
 
-export const Sidebar: React.FC = () => {
+export interface SidebarProps {
+  isCollapsed?: boolean;
+  onToggleCollapse?: () => void;
+}
+
+export const Sidebar: React.FC<SidebarProps> = ({
+  isCollapsed = false,
+  onToggleCollapse,
+}) => {
   return (
-    <aside className={styles.sidebar}>
+    <aside className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ''}`}>
       <div className={styles.brand}>
-        <div className={styles.brandIcon}>
-          <Store size={18} strokeWidth={2} />
+        <div className={styles.brandLeft}>
+          <div className={styles.brandIcon}>
+            <Store size={18} strokeWidth={2} />
+          </div>
+          {!isCollapsed && (
+            <div className={styles.brandInfo}>
+              <span className={styles.brandTitle}>Kirstry POS</span>
+              <span className={styles.brandSubtitle}>Kirana Store Manager</span>
+            </div>
+          )}
         </div>
-        <div className={styles.brandInfo}>
-          <span className={styles.brandTitle}>Kirstry POS</span>
-          <span className={styles.brandSubtitle}>Kirana Store Manager</span>
-        </div>
+
+        {onToggleCollapse && (
+          <button
+            className={styles.toggleBtn}
+            onClick={onToggleCollapse}
+            title={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
+            aria-label={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
+          >
+            {isCollapsed ? <PanelLeftOpen size={18} /> : <PanelLeftClose size={18} />}
+          </button>
+        )}
       </div>
 
       <nav className={styles.nav}>
@@ -52,15 +77,16 @@ export const Sidebar: React.FC = () => {
               `${styles.navItem} ${isActive ? styles.active : ''}`
             }
             end={route.path === '/'}
+            title={isCollapsed ? route.label : undefined}
           >
             <span className={styles.navIcon}>{route.icon}</span>
-            <span>{route.label}</span>
+            {!isCollapsed && <span className={styles.navLabel}>{route.label}</span>}
           </NavLink>
         ))}
       </nav>
 
       <div className={styles.footer}>
-        Kirstry v1.0 &bull; Local Engine
+        {isCollapsed ? 'v1.0' : 'Kirstry v1.0 • Local Engine'}
       </div>
     </aside>
   );

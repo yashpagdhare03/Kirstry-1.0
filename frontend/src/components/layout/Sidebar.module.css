@@ -10,6 +10,11 @@
   flex-direction: column;
   z-index: 100;
   user-select: none;
+  transition: width var(--transition-normal);
+}
+
+.collapsed {
+  width: 68px;
 }
 
 @media (max-width: 768px) {
@@ -20,11 +25,18 @@
 
 .brand {
   height: 60px;
-  padding: 0 20px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-default);
+  overflow: hidden;
+}
+
+.brandLeft {
   display: flex;
   align-items: center;
   gap: 12px;
-  border-bottom: 1px solid var(--border-default);
 }
 
 .brandIcon {
@@ -37,11 +49,14 @@
   align-items: center;
   justify-content: center;
   font-weight: 700;
+  flex-shrink: 0;
 }
 
 .brandInfo {
   display: flex;
   flex-direction: column;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .brandTitle {
@@ -56,9 +71,29 @@
   color: var(--text-muted);
 }
 
+.toggleBtn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.toggleBtn:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-surface-alt);
+}
+
 .nav {
   flex: 1;
-  padding: 16px 12px;
+  padding: 16px 10px;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -77,6 +112,13 @@
   text-decoration: none;
   transition: all var(--transition-fast);
   position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.collapsed .navItem {
+  justify-content: center;
+  padding: 10px 0;
 }
 
 .navItem:hover {
@@ -105,12 +147,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+}
+
+.navLabel {
+  transition: opacity var(--transition-fast);
+}
+
+.collapsed .navLabel {
+  display: none;
 }
 
 .footer {
-  padding: 16px;
+  padding: 16px 12px;
   border-top: 1px solid var(--border-default);
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-faint);
   text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

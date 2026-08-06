@@ -13,11 +13,16 @@
   gap: 12px;
   z-index: 90;
   user-select: none;
+  transition: left var(--transition-normal);
+}
+
+.collapsed {
+  left: 68px;
 }
 
 @media (max-width: 768px) {
   .topBar {
-    left: 0;
+    left: 0 !important;
     padding: 0 16px;
   }
 }

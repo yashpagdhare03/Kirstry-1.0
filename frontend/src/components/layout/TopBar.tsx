@@ -16,7 +16,11 @@ const titleMap: Record<string, string> = {
   '/settings': 'Store Settings',
 };
 
-export const TopBar: React.FC = () => {
+export interface TopBarProps {
+  isCollapsed?: boolean;
+}
+
+export const TopBar: React.FC<TopBarProps> = ({ isCollapsed = false }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [unreadCount, setUnreadCount] = useState<number>(0);
@@ -38,7 +42,7 @@ export const TopBar: React.FC = () => {
   }, [location.pathname]);
 
   return (
-    <header className={styles.topBar}>
+    <header className={`${styles.topBar} ${isCollapsed ? styles.collapsed : ''}`}>
       <h1 className={styles.pageTitle}>{pageTitle}</h1>
 
       <div className={styles.actions}>
