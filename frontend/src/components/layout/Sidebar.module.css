@@ -10,16 +10,11 @@
   flex-direction: column;
   z-index: 100;
   user-select: none;
-  transition: transform var(--transition-normal), opacity var(--transition-normal), width var(--transition-normal);
-  transform: translateX(0);
-  opacity: 1;
+  transition: width var(--transition-normal);
 }
 
 .collapsed {
-  transform: translateX(-100%);
-  opacity: 0;
-  width: 0;
-  pointer-events: none;
+  width: 68px;
 }
 
 @media (max-width: 768px) {
@@ -36,6 +31,11 @@
   justify-content: space-between;
   border-bottom: 1px solid var(--border-default);
   overflow: hidden;
+}
+
+.collapsed .brand {
+  justify-content: center;
+  padding: 0;
 }
 
 .brandLeft {
@@ -55,6 +55,40 @@
   justify-content: center;
   font-weight: 700;
   flex-shrink: 0;
+  border: none;
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.collapsed .brandIcon {
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+}
+
+.collapsed .brandIcon:hover {
+  background-color: var(--accent-hover);
+  transform: scale(1.05);
+}
+
+.storeIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.openIcon {
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.collapsed .brandIcon:hover .storeIcon {
+  display: none;
+}
+
+.collapsed .brandIcon:hover .openIcon {
+  display: flex;
 }
 
 .brandInfo {
@@ -80,9 +114,9 @@
   background: none;
   border: none;
   color: var(--text-muted);
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius-md);
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -98,7 +132,7 @@
 
 .nav {
   flex: 1;
-  padding: 16px 12px;
+  padding: 16px 10px;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -119,6 +153,11 @@
   position: relative;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.collapsed .navItem {
+  justify-content: center;
+  padding: 10px 0;
 }
 
 .navItem:hover {
@@ -152,6 +191,10 @@
 
 .navLabel {
   transition: opacity var(--transition-fast);
+}
+
+.collapsed .navLabel {
+  display: none;
 }
 
 .footer {

@@ -11,6 +11,7 @@ import {
   Settings,
   Store,
   PanelLeftClose,
+  PanelLeftOpen,
 } from 'lucide-react';
 import styles from './Sidebar.module.css';
 
@@ -44,23 +45,40 @@ export const Sidebar: React.FC<SidebarProps> = ({
     <aside className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ''}`}>
       <div className={styles.brand}>
         <div className={styles.brandLeft}>
-          <div className={styles.brandIcon}>
-            <Store size={18} strokeWidth={2} />
-          </div>
-          <div className={styles.brandInfo}>
-            <span className={styles.brandTitle}>Kirstry POS</span>
-            <span className={styles.brandSubtitle}>Kirana Store Manager</span>
-          </div>
+          <button
+            type="button"
+            className={styles.brandIcon}
+            onClick={isCollapsed ? onToggleCollapse : undefined}
+            title={isCollapsed ? 'Expand Sidebar' : 'Kirstry POS'}
+            aria-label={isCollapsed ? 'Expand Sidebar' : 'Kirstry POS'}
+          >
+            <span className={styles.storeIcon}>
+              <Store size={18} strokeWidth={2} />
+            </span>
+            {isCollapsed && (
+              <span className={styles.openIcon}>
+                <PanelLeftOpen size={18} strokeWidth={2} />
+              </span>
+            )}
+          </button>
+
+          {!isCollapsed && (
+            <div className={styles.brandInfo}>
+              <span className={styles.brandTitle}>Kirstry POS</span>
+              <span className={styles.brandSubtitle}>Kirana Store Manager</span>
+            </div>
+          )}
         </div>
 
-        {onToggleCollapse && (
+        {!isCollapsed && onToggleCollapse && (
           <button
+            type="button"
             className={styles.toggleBtn}
             onClick={onToggleCollapse}
-            title="Close Sidebar"
-            aria-label="Close Sidebar"
+            title="Collapse Sidebar"
+            aria-label="Collapse Sidebar"
           >
-            <PanelLeftClose size={20} strokeWidth={1.5} />
+            <PanelLeftClose size={18} />
           </button>
         )}
       </div>
@@ -74,15 +92,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
               `${styles.navItem} ${isActive ? styles.active : ''}`
             }
             end={route.path === '/'}
+            title={isCollapsed ? route.label : undefined}
           >
             <span className={styles.navIcon}>{route.icon}</span>
-            <span className={styles.navLabel}>{route.label}</span>
+            {!isCollapsed && <span className={styles.navLabel}>{route.label}</span>}
           </NavLink>
         ))}
       </nav>
 
       <div className={styles.footer}>
-        Kirstry v1.0 &bull; Local Engine
+        {isCollapsed ? 'v1.0' : 'Kirstry v1.0 • Local Engine'}
       </div>
     </aside>
   );

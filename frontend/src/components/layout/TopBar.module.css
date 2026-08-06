@@ -17,7 +17,7 @@
 }
 
 .collapsed {
-  left: 0;
+  left: 68px;
 }
 
 @media (max-width: 768px) {
@@ -25,33 +25,6 @@
     left: 0 !important;
     padding: 0 16px;
   }
-}
-
-.leftSection {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;
-}
-
-.sidebarOpenBtn {
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  flex-shrink: 0;
-}
-
-.sidebarOpenBtn:hover {
-  color: var(--text-primary);
-  background-color: var(--bg-surface-alt);
 }
 
 .pageTitle {
