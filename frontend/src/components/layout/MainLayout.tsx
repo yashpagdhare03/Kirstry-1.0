@@ -27,7 +27,7 @@ export const MainLayout: React.FC = () => {
   return (
     <div className={styles.layout}>
       <Sidebar isCollapsed={isCollapsed} onToggleCollapse={toggleCollapse} />
-      <TopBar isCollapsed={isCollapsed} />
+      <TopBar isCollapsed={isCollapsed} onToggleCollapse={toggleCollapse} />
       <main className={`${styles.mainContent} ${isCollapsed ? styles.collapsed : ''}`}>
         <Outlet />
       </main>

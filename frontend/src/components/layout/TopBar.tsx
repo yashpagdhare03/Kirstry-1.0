@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { Bell, User, LogOut, ChevronDown } from 'lucide-react';
+import { Bell, User, LogOut, ChevronDown, PanelLeftOpen } from 'lucide-react';
 import { api } from '../../services/api';
 import styles from './TopBar.module.css';
 
@@ -18,9 +18,13 @@ const titleMap: Record<string, string> = {
 
 export interface TopBarProps {
   isCollapsed?: boolean;
+  onToggleCollapse?: () => void;
 }
 
-export const TopBar: React.FC<TopBarProps> = ({ isCollapsed = false }) => {
+export const TopBar: React.FC<TopBarProps> = ({
+  isCollapsed = false,
+  onToggleCollapse,
+}) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [unreadCount, setUnreadCount] = useState<number>(0);
@@ -43,7 +47,19 @@ export const TopBar: React.FC<TopBarProps> = ({ isCollapsed = false }) => {
 
   return (
     <header className={`${styles.topBar} ${isCollapsed ? styles.collapsed : ''}`}>
-      <h1 className={styles.pageTitle}>{pageTitle}</h1>
+      <div className={styles.leftSection}>
+        {isCollapsed && onToggleCollapse && (
+          <button
+            className={styles.sidebarOpenBtn}
+            onClick={onToggleCollapse}
+            title="Open Sidebar"
+            aria-label="Open Sidebar"
+          >
+            <PanelLeftOpen size={20} strokeWidth={1.5} />
+          </button>
+        )}
+        <h1 className={styles.pageTitle}>{pageTitle}</h1>
+      </div>
 
       <div className={styles.actions}>
         {/* Notification Bell */}

@@ -20,8 +20,8 @@
 }
 
 .collapsed {
-  margin-left: 68px;
-  width: calc(100% - 68px);
+  margin-left: 0;
+  width: 100%;
 }
 
 @media (max-width: 768px) {
