@@ -83,4 +83,10 @@ export const productService = {
   async lookupBarcode(barcode: string) {
     return api.get<BarcodeLookupResult>(`/products/barcode-lookup?barcode=${encodeURIComponent(barcode)}`);
   },
+
+  async uploadProductImage(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+    return api.post<{ image_url: string }>('/products/upload-image', formData);
+  },
 };

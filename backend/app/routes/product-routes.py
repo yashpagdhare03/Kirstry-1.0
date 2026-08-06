@@ -21,7 +21,7 @@ from app.services import (
     update_product,
     delete_product,
     lookup_barcode,
-    upload_product_image,
+    upload_product_image_to_supabase,
 )
 
 product_bp = Blueprint("products", __name__)
@@ -65,6 +65,45 @@ def create_category_route():
 # ----------------------------------------------------
 # Product Endpoints
 # ----------------------------------------------------
+
+@product_bp.route("/api/products/barcode-lookup", methods=["GET", "POST"])
+def barcode_lookup_route():
+    """Lookup product details by barcode via Open Food Facts (GET or POST)."""
+    barcode = None
+    if request.method == "GET":
+        barcode = request.args.get("barcode")
+    else:
+        json_data = request.get_json() or {}
+        try:
+            schema = BarcodeLookupSchema(**json_data)
+            barcode = schema.barcode
+        except ValidationError as err:
+            return error_response(message="Validation error", status_code=400, data=err.errors())
+
+    if not barcode:
+        return error_response("Barcode query parameter required", status_code=400)
+
+    data = lookup_barcode(barcode)
+    return success_response(data=data, message="Barcode metadata retrieved successfully")
+
+
+@product_bp.route("/api/products/upload-image", methods=["POST"])
+def upload_standalone_image_route():
+    """Upload product image file to Supabase Storage bucket and return public URL."""
+    if "file" not in request.files:
+        return error_response("Image file required in multipart/form-data as 'file'", status_code=400)
+
+    file = request.files["file"]
+    file_bytes = file.read()
+    filename = file.filename or "image.jpg"
+    content_type = file.content_type or "image/jpeg"
+
+    try:
+        image_url = upload_product_image_to_supabase(file_bytes, filename, content_type)
+        return success_response(data={"image_url": image_url}, message="Image uploaded successfully")
+    except Exception as e:
+        return error_response(message=str(e), status_code=500)
+
 
 @product_bp.route("/api/products", methods=["POST"])
 def create_product_route():
@@ -162,44 +201,3 @@ def delete_product_route(product_id: str):
         return error_response("Product not found", status_code=404)
 
     return success_response(data={"id": product_id}, message="Product deleted successfully")
-
-
-@product_bp.route("/api/products/barcode-lookup", methods=["POST"])
-def barcode_lookup_route():
-    """Lookup product details by barcode via Open Food Facts."""
-    json_data = request.get_json() or {}
-    try:
-        schema = BarcodeLookupSchema(**json_data)
-    except ValidationError as err:
-        return error_response(message="Validation error", status_code=400, data=err.errors())
-
-    data = lookup_barcode(schema.barcode)
-    return success_response(data=data, message="Barcode metadata retrieved successfully")
-
-
-@product_bp.route("/api/products/<product_id>/image", methods=["POST"])
-def upload_image_route(product_id: str):
-    """Upload product image to Supabase Storage and update image_url."""
-    store_id = get_request_store_id()
-    if not store_id:
-        return error_response("Store ID required in header (X-Store-ID)", status_code=400)
-
-    product = get_product_by_id(store_id, product_id)
-    if not product:
-        return error_response("Product not found", status_code=404)
-
-    # Check multipart file or json payload
-    if "file" in request.files:
-        file = request.files["file"]
-        file_bytes = file.read()
-        filename = file.filename or "image.jpg"
-        content_type = file.content_type or "image/jpeg"
-    else:
-        return error_response("Image file required in multipart/form-data as 'file'", status_code=400)
-
-    try:
-        image_url = upload_product_image(file_bytes, filename, content_type)
-        updated = update_product(store_id, product_id, {"image_url": image_url})
-        return success_response(data=updated, message="Product image uploaded successfully")
-    except Exception as e:
-        return error_response(message=str(e), status_code=500)

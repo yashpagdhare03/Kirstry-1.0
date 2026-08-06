@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { productService, type Category } from '../../services/products';
 import { Button, Card, Input } from '../../components/shared';
-import { ArrowLeft, Save, Barcode } from 'lucide-react';
+import { ArrowLeft, Save, Barcode, Upload, Trash2 } from 'lucide-react';
 import styles from './ProductPages.module.css';
 
 export const AddProductPage: React.FC = () => {
@@ -22,6 +22,7 @@ export const AddProductPage: React.FC = () => {
   const [reorderThreshold, setReorderThreshold] = useState<number | string>(5);
   const [imageUrl, setImageUrl] = useState(prefilled.image_url || '');
 
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -38,6 +39,29 @@ export const AddProductPage: React.FC = () => {
     }
     loadCategories();
   }, []);
+
+  const handleImageFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingImage(true);
+    setError(null);
+    try {
+      const res = await productService.uploadProductImage(file);
+      if (res.success && res.data?.image_url) {
+        setImageUrl(res.data.image_url);
+      } else {
+        // Fallback for local preview if server storage is unconfigured
+        const localPreview = URL.createObjectURL(file);
+        setImageUrl(localPreview);
+      }
+    } catch (err: any) {
+      const localPreview = URL.createObjectURL(file);
+      setImageUrl(localPreview);
+    } finally {
+      setUploadingImage(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -208,22 +232,59 @@ export const AddProductPage: React.FC = () => {
             onChange={(e) => setReorderThreshold(e.target.value)}
           />
 
-          {/* Image URL */}
-          <div className={styles.fullRow}>
-            <Input
-              label="Product Image URL"
-              placeholder="https://..."
-              value={imageUrl}
-              onChange={(e) => setImageUrl(e.target.value)}
-            />
-            {imageUrl && (
-              <img
-                src={imageUrl}
-                alt="Preview"
-                className={styles.imagePreview}
-                style={{ marginTop: '10px' }}
-              />
-            )}
+          {/* Direct File Upload Control */}
+          <div className={styles.fullRow} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <label className="label" style={{ fontSize: '13px', fontWeight: 500 }}>
+              Product Image Upload
+            </label>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+              <label
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '10px 16px',
+                  backgroundColor: 'var(--bg-surface-alt)',
+                  border: '1px solid var(--border-default)',
+                  borderRadius: 'var(--radius-md)',
+                  color: 'var(--text-primary)',
+                  fontSize: '13px',
+                  fontWeight: 500,
+                  cursor: 'pointer',
+                  userSelect: 'none',
+                }}
+              >
+                <Upload size={16} />
+                {uploadingImage ? 'Uploading Image...' : 'Choose Image File'}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageFileChange}
+                  style={{ display: 'none' }}
+                  disabled={uploadingImage}
+                />
+              </label>
+
+              {imageUrl && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <img
+                    src={imageUrl}
+                    alt="Uploaded Preview"
+                    className={styles.imagePreview}
+                    style={{ width: '64px', height: '64px', borderRadius: '8px' }}
+                  />
+                  <Button
+                    type="button"
+                    variant="danger"
+                    size="sm"
+                    onClick={() => setImageUrl('')}
+                    leftIcon={<Trash2 size={14} />}
+                  >
+                    Remove Image
+                  </Button>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Form Actions */}

@@ -86,8 +86,9 @@ Every endpoint returns a consistent JSON envelope:
 - `GET /api/products/<product_id>` — Get single product details
 - `PUT /api/products/<product_id>` — Update product details
 - `DELETE /api/products/<product_id>` — Soft-delete product (`is_active = false`)
-- `POST /api/products/barcode-lookup` — Open Food Facts barcode search `{ "barcode": "890123456789" }`
-- `POST /api/products/<product_id>/image` — Upload product photo (Multipart form / Base64 upload to Supabase Storage)
+- `GET /api/products/barcode-lookup?barcode=...` or `POST /api/products/barcode-lookup` — Open Food Facts barcode search
+- `POST /api/products/upload-image` — Standalone product image upload (Multipart `file` to Supabase Storage `product-images` returning `{ "image_url": "..." }`)
+- `POST /api/products/<product_id>/image` — Upload product photo for existing product
 
 ### 3. 📦 Inventory & Stock Control (`app.routes.inventory-routes`)
 - `POST /api/inventory/stock-in` — Add stock batch `{ "product_id": "...", "quantity": 50, "cost_price": 40.0, "expiry_date": "2026-12-31" }`

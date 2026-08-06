@@ -19,6 +19,7 @@ get_products = product_service_module.get_products
 get_product_by_id = product_service_module.get_product_by_id
 update_product = product_service_module.update_product
 delete_product = product_service_module.delete_product
+upload_product_image_to_supabase = product_service_module.upload_product_image_to_supabase
 
 inventory_service_module = importlib.import_module("app.services.inventory-service")
 record_stock_in = inventory_service_module.record_stock_in
@@ -92,6 +93,7 @@ __all__ = [
     "get_product_by_id",
     "update_product",
     "delete_product",
+    "upload_product_image_to_supabase",
     "record_stock_in",
     "record_stock_out",
     "record_adjustment",
