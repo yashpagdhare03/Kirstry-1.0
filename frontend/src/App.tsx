@@ -7,7 +7,12 @@ import { AddProductPage } from './pages/products/AddProductPage';
 import { BarcodeLookupPage } from './pages/products/BarcodeLookupPage';
 import { EditProductPage } from './pages/products/EditProductPage';
 import { ProductDetailPage } from './pages/products/ProductDetailPage';
-import { InventoryPage } from './pages/InventoryPage';
+import { StockLevelsPage } from './pages/inventory/StockLevelsPage';
+import { StockInPage } from './pages/inventory/StockInPage';
+import { StockOutPage } from './pages/inventory/StockOutPage';
+import { AdjustmentPage } from './pages/inventory/AdjustmentPage';
+import { TransactionHistoryPage } from './pages/inventory/TransactionHistoryPage';
+import { BatchDetailPage } from './pages/inventory/BatchDetailPage';
 import { KhataPage } from './pages/KhataPage';
 import { SuppliersPage } from './pages/SuppliersPage';
 import { AnalyticsPage } from './pages/AnalyticsPage';
@@ -26,7 +31,12 @@ export default function App() {
           <Route path="products/barcode-lookup" element={<BarcodeLookupPage />} />
           <Route path="products/:id" element={<ProductDetailPage />} />
           <Route path="products/:id/edit" element={<EditProductPage />} />
-          <Route path="inventory" element={<InventoryPage />} />
+          <Route path="inventory" element={<StockLevelsPage />} />
+          <Route path="inventory/stock-in" element={<StockInPage />} />
+          <Route path="inventory/stock-out" element={<StockOutPage />} />
+          <Route path="inventory/adjustment" element={<AdjustmentPage />} />
+          <Route path="inventory/transactions" element={<TransactionHistoryPage />} />
+          <Route path="inventory/batches/:product_id" element={<BatchDetailPage />} />
           <Route path="khata" element={<KhataPage />} />
           <Route path="suppliers" element={<SuppliersPage />} />
           <Route path="analytics" element={<AnalyticsPage />} />
