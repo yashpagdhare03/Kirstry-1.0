@@ -1,7 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { MainLayout } from './components/layout/MainLayout';
 import { DashboardPage } from './pages/DashboardPage';
-import { BillingPage } from './pages/BillingPage';
+import { SalesHistoryPage } from './pages/billing/SalesHistoryPage';
+import { NewBillPage } from './pages/billing/NewBillPage';
+import { InvoiceViewPage } from './pages/billing/InvoiceViewPage';
+import { DailySummaryPage } from './pages/billing/DailySummaryPage';
 import { ProductListPage } from './pages/products/ProductListPage';
 import { AddProductPage } from './pages/products/AddProductPage';
 import { BarcodeLookupPage } from './pages/products/BarcodeLookupPage';
@@ -25,7 +28,10 @@ export default function App() {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<DashboardPage />} />
-          <Route path="billing" element={<BillingPage />} />
+          <Route path="billing" element={<SalesHistoryPage />} />
+          <Route path="billing/new" element={<NewBillPage />} />
+          <Route path="billing/invoice/:sale_id" element={<InvoiceViewPage />} />
+          <Route path="billing/summary" element={<DailySummaryPage />} />
           <Route path="products" element={<ProductListPage />} />
           <Route path="products/add" element={<AddProductPage />} />
           <Route path="products/barcode-lookup" element={<BarcodeLookupPage />} />

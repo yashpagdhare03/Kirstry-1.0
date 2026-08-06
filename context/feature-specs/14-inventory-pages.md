@@ -3,7 +3,7 @@
 # 14 — Inventory Management Pages
 
 ## Status
-Not Started
+Completed
 
 ## Objective
 Implement stock-in, stock-out, stock adjustment forms, stock levels overview, transaction history, and batch detail views. The layout MUST be built with a **Mobile-First Responsive Design**, providing easy touch input for quick stock entries on handheld mobile devices (`<768px`) while expanding cleanly on desktop displays (`>=768px`).
@@ -30,11 +30,11 @@ Pages & components:
 4. Use mobile-first CSS modules with responsive breakpoints (`@media (min-width: 768px)`).
 
 ## Acceptance Criteria
-- [ ] Mobile-First Responsive Design: Inventory forms and stock tables fit mobile viewports (<768px) with zero horizontal overflow and expand to multi-column layouts on desktop
-- [ ] Stock-in records new purchase batch and updates stock levels
-- [ ] Stock-out form prevents submitting quantities greater than total available stock
-- [ ] Transaction history table displays append-only logs with filtering by type (`stock_in`, `stock_out`, `adjustment`)
-- [ ] Batch detail page shows batch expiry dates and remaining quantities
+- [x] Mobile-First Responsive Design: Inventory forms and stock tables fit mobile viewports (<768px) with zero horizontal overflow and expand to multi-column layouts on desktop
+- [x] Stock-in records new purchase batch and updates stock levels
+- [x] Stock-out form prevents submitting quantities greater than total available stock
+- [x] Transaction history table displays append-only logs with filtering by type (`stock_in`, `stock_out`, `adjustment`)
+- [x] Batch detail page shows batch expiry dates and remaining quantities
 
 ## MCP Verification
 - Use `chrome-devtools-mcp` `resize_page` to test Mobile (375px) and Desktop (1440px) viewports

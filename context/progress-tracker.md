@@ -67,19 +67,36 @@ Update this file after every meaningful implementation change.
   - `npm run build` completed cleanly with 0 errors.
   - DevTools MCP Verification across Desktop (`1440x900`) and Mobile (`375x667`).
 
+### ✅ Feature 14: Inventory & Stock Management Pages UI (`14-inventory-pages.md`) — *Completed 2026-08-06*
+- **Typed Inventory Service**:
+  - Built [`frontend/src/services/inventory.ts`](file:///Users/thunder/Desktop/Kirstry-1.0/frontend/src/services/inventory.ts) handling `/inventory/stock-levels`, `/inventory/stock-in`, `/inventory/stock-out`, `/inventory/adjustment`, `/inventory/transactions`, and `/inventory/batches/:product_id`.
+- **Reusable Product Selector Component**:
+  - Created [`ProductSelector.tsx`](file:///Users/thunder/Desktop/Kirstry-1.0/frontend/src/components/inventory/ProductSelector.tsx) with search autocomplete and touch selection.
+- **6 Complete Inventory Management Pages**:
+  - `StockLevelsPage` (`/inventory`): Stock overview table with status filtering (`OK`, `Low Stock`, `Out of Stock`), search, and quick action buttons.
+  - `StockInPage` (`/inventory/stock-in`): Batch purchase entry form.
+  - `StockOutPage` (`/inventory/stock-out`): Stock removal form with client-side quantity validation against total available stock.
+  - `AdjustmentPage` (`/inventory/adjustment`): Physical count reconciliation form with live quantity difference preview.
+  - `TransactionHistoryPage` (`/inventory/transactions`): Stock audit log with transaction type filters (`stock_in`, `stock_out`, `adjustment`).
+  - `BatchDetailPage` (`/inventory/batches/:product_id`): Batch breakdown per product with visual expiry countdown badges.
+- **Verification & Builds**:
+  - `npm run test` passed 6/6 Vitest tests (including `StockLevelsPage.test.tsx`).
+  - `npm run build` completed cleanly with 0 errors.
+  - Pushed commit `1838571` to GitHub branch `frontend`.
+
 ---
 
 ## In Progress
 
-- **Feature 14: Inventory & Stock Management Pages** (`context/feature-specs/14-inventory-pages.md`)
+- None (Feature 14 complete, ready for Feature 15 POS Billing Pages)
 
 ---
 
 ## Next Up
 
-1. `14-inventory-pages.md` — Stock-in form, batch table, reconciliation adjustment form, low stock view
-2. `15-billing-pages.md` — POS billing UI, cart hook, payment mode selection, PDF invoice generator
-3. `16-khata-pages.md` — Customer credit ledger, entry creation form, payment collection modal
+1. `15-billing-pages.md` — POS billing UI, cart hook, payment mode selection, PDF invoice generator
+2. `16-khata-pages.md` — Customer credit ledger, entry creation form, payment collection modal
+3. `17-supplier-pages.md` — Supplier directory, purchase order builder, WhatsApp sharing link
 
 ---
 
