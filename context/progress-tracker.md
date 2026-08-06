@@ -99,19 +99,32 @@ Update this file after every meaningful implementation change.
   - `npm run build` completed cleanly with 0 errors.
   - Pushed commit `222c202` to GitHub branch `frontend`.
 
+### ✅ Feature 16: Digital Khata (Customer Credit) Pages UI (`16-khata-pages.md`) — *Completed 2026-08-06*
+- **Typed Khata Service (`khata.ts`)**:
+  - Built [`frontend/src/services/khata.ts`](file:///Users/thunder/Desktop/Kirstry-1.0/frontend/src/services/khata.ts) handling `/customers`, `/khata/credit`, `/khata/payment`, `/khata/outstanding`, and `/khata/summary`.
+- **4 Digital Khata Pages**:
+  - `CustomerListPage` (`/khata`): Customer directory with search, mobile touch cards (`<768px`), desktop data table (`>=768px`), and total outstanding exposure KPI header.
+  - `AddCustomerPage` (`/khata/add`): Single-column mobile-first form to register customer profile and credit limit.
+  - `CustomerDetailPage` (`/khata/:customer_id`): Customer stats profile, credit/payment timeline log (red `--state-error` credit entries, green `--state-success` payment receipts), and "Add Credit" & "Record Payment" modal forms with client-side over-payment protection.
+  - `OutstandingPage` (`/khata/outstanding`): High-balance customer exposure report sorted by balance descending.
+- **Verification & Builds**:
+  - `npm run test` passed 8/8 Vitest tests (including `CustomerListPage.test.tsx`).
+  - `npm run build` completed cleanly with 0 errors.
+  - Pushed commit `5835f03` to GitHub branch `frontend`.
+
 ---
 
 ## In Progress
 
-- None (Feature 15 complete, ready for Feature 16 Digital Khata Pages)
+- None (Feature 16 complete, ready for Feature 17 Supplier Management Pages)
 
 ---
 
 ## Next Up
 
-1. `16-khata-pages.md` — Customer credit ledger, entry creation form, payment collection modal
-2. `17-supplier-pages.md` — Supplier directory, purchase order builder, WhatsApp sharing link
-3. `18-analytics-pages.md` — Sales reports, category distribution, fast/slow moving items charts
+1. `17-supplier-pages.md` — Supplier directory, purchase order builder, WhatsApp sharing link
+2. `18-analytics-pages.md` — Sales reports, category distribution, fast/slow moving items charts
+3. `19-settings-alerts-pages.md` — Store settings, user profile, notification center
 
 ---
 

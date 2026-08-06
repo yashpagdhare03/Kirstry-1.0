@@ -3,7 +3,7 @@
 # 16 — Digital Khata (Customer Credit) Pages
 
 ## Status
-Not Started
+Completed
 
 ## Objective
 Implement customer list, customer detail view with transaction timeline, credit/payment modal forms, and outstanding balances report. The layout MUST be built with a **Mobile-First Responsive Design**, optimizing customer lists and timeline cards for easy mobile interaction (`<768px`) and scaling to multi-column desktop dashboards (`>=768px`).
@@ -27,11 +27,11 @@ Pages to create:
 4. Apply mobile-first CSS modules with responsive breakpoints (`@media (min-width: 768px)`).
 
 ## Acceptance Criteria
-- [ ] Mobile-First Responsive Design: Khata customer directory, detail timelines, and payment modals fit mobile screens (<768px) with touch-friendly targets and scale seamlessly on desktop
-- [ ] Customer list accurately displays net outstanding balances
-- [ ] Customer detail displays chronological credit/payment timeline
-- [ ] Add Credit modal creates credit record and updates balance
-- [ ] Record Payment modal prevents entering amounts greater than total balance
+- [x] Mobile-First Responsive Design: Khata customer directory, detail timelines, and payment modals fit mobile screens (<768px) with touch-friendly targets and scale seamlessly on desktop
+- [x] Customer list accurately displays net outstanding balances
+- [x] Customer detail displays chronological credit/payment timeline
+- [x] Add Credit modal creates credit record and updates balance
+- [x] Record Payment modal prevents entering amounts greater than total balance
 
 ## MCP Verification
 - Use `chrome-devtools-mcp` `resize_page` to test Mobile (375px) and Desktop (1440px) viewports

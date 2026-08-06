@@ -20,7 +20,12 @@ import { CustomerListPage } from './pages/khata/CustomerListPage';
 import { AddCustomerPage } from './pages/khata/AddCustomerPage';
 import { CustomerDetailPage } from './pages/khata/CustomerDetailPage';
 import { OutstandingPage } from './pages/khata/OutstandingPage';
-import { SuppliersPage } from './pages/SuppliersPage';
+import { SupplierListPage } from './pages/suppliers/SupplierListPage';
+import { AddSupplierPage } from './pages/suppliers/AddSupplierPage';
+import { SupplierDetailPage } from './pages/suppliers/SupplierDetailPage';
+import { CreatePurchaseOrderPage } from './pages/suppliers/CreatePurchaseOrderPage';
+import { PurchaseOrderListPage } from './pages/suppliers/PurchaseOrderListPage';
+import { PurchaseOrderDetailPage } from './pages/suppliers/PurchaseOrderDetailPage';
 import { AnalyticsPage } from './pages/AnalyticsPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { AlertsPage } from './pages/AlertsPage';
@@ -50,7 +55,12 @@ export default function App() {
           <Route path="khata/add" element={<AddCustomerPage />} />
           <Route path="khata/outstanding" element={<OutstandingPage />} />
           <Route path="khata/:customer_id" element={<CustomerDetailPage />} />
-          <Route path="suppliers" element={<SuppliersPage />} />
+          <Route path="suppliers" element={<SupplierListPage />} />
+          <Route path="suppliers/add" element={<AddSupplierPage />} />
+          <Route path="suppliers/:id" element={<SupplierDetailPage />} />
+          <Route path="suppliers/:id/purchase-order/new" element={<CreatePurchaseOrderPage />} />
+          <Route path="purchase-orders" element={<PurchaseOrderListPage />} />
+          <Route path="purchase-orders/:id" element={<PurchaseOrderDetailPage />} />
           <Route path="analytics" element={<AnalyticsPage />} />
           <Route path="settings" element={<SettingsPage />} />
           <Route path="alerts" element={<AlertsPage />} />
