@@ -2,7 +2,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { MainLayout } from './components/layout/MainLayout';
 import { DashboardPage } from './pages/DashboardPage';
 import { BillingPage } from './pages/BillingPage';
-import { ProductsPage } from './pages/ProductsPage';
+import { ProductListPage } from './pages/products/ProductListPage';
+import { AddProductPage } from './pages/products/AddProductPage';
+import { BarcodeLookupPage } from './pages/products/BarcodeLookupPage';
+import { EditProductPage } from './pages/products/EditProductPage';
+import { ProductDetailPage } from './pages/products/ProductDetailPage';
 import { InventoryPage } from './pages/InventoryPage';
 import { KhataPage } from './pages/KhataPage';
 import { SuppliersPage } from './pages/SuppliersPage';
@@ -17,7 +21,11 @@ export default function App() {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<DashboardPage />} />
           <Route path="billing" element={<BillingPage />} />
-          <Route path="products" element={<ProductsPage />} />
+          <Route path="products" element={<ProductListPage />} />
+          <Route path="products/add" element={<AddProductPage />} />
+          <Route path="products/barcode-lookup" element={<BarcodeLookupPage />} />
+          <Route path="products/:id" element={<ProductDetailPage />} />
+          <Route path="products/:id/edit" element={<EditProductPage />} />
           <Route path="inventory" element={<InventoryPage />} />
           <Route path="khata" element={<KhataPage />} />
           <Route path="suppliers" element={<SuppliersPage />} />

@@ -6,11 +6,11 @@ Update this file after every meaningful implementation change.
 
 ## Current Phase
 
-- **Phase 2: Frontend Setup & UI Development** — In Progress (Unit 12 of 22 completed)
+- **Phase 2: Frontend Setup & UI Development** — In Progress (Unit 13 of 22 completed)
 
 ## Current Goal
 
-- **Feature 13: Product Management Pages** (`context/feature-specs/13-product-pages.md`) — Implement Product catalog list table, Add Product form with Supabase Storage image upload, Barcode lookup page with Open Food Facts integration, Edit Product form, and Product detail page.
+- **Feature 14: Inventory & Stock Management Pages** (`context/feature-specs/14-inventory-pages.md`) — Implement Stock-In batch creation form, Active Inventory Batches table view, Physical count adjustment reconciliation form, Low Stock reorder list, and append-only inventory transaction audit log.
 
 ---
 
@@ -51,38 +51,35 @@ Update this file after every meaningful implementation change.
 - Desktop 240px sidebar, TopBar with dynamic route title mapping & unread notification badge, mobile 5-icon bottom navigation bar, React Router layout container shell.
 
 ### ✅ Feature 12: Dashboard Page UI (`12-dashboard-page.md`) — *Completed 2026-08-06*
-- **Dashboard Service & Custom Hook**:
-  - Built [`frontend/src/services/dashboard.ts`](file:///Users/thunder/Desktop/Kirstry-1.0/frontend/src/services/dashboard.ts) connecting live to backend endpoints (`/api/dashboard/summary`, `/api/dashboard/expiry-alerts`, `/api/dashboard/low-stock-alerts`, `/api/dashboard/recent-sales`)
-  - Built [`frontend/src/hooks/useDashboard.ts`](file:///Users/thunder/Desktop/Kirstry-1.0/frontend/src/hooks/useDashboard.ts) managing live metrics, loading states, error states, and background refresh
-- **Mobile-First Responsive Dashboard UI**:
-  - Built [`frontend/src/pages/DashboardPage.tsx`](file:///Users/thunder/Desktop/Kirstry-1.0/frontend/src/pages/DashboardPage.tsx) & [`DashboardPage.module.css`](file:///Users/thunder/Desktop/Kirstry-1.0/frontend/src/pages/DashboardPage.module.css)
-  - **Stock Summary Metrics**: Live cards displaying Total Catalog Items, Inventory Valuation (`₹`), Low Stock Alert count, and Today's POS Sales (`₹`)
-  - **Quick Action CTA Buttons**: Touch-friendly navigation to `/billing`, `/inventory`, `/products`, `/khata`
-  - **Alert Feeds**: Low stock warnings feed with deficit badges & 7-day expiring stock feed with urgency badges (`1_day`, `3_days`, `7_days`)
-  - **Recent Sales Table**: Latest 5 POS bills with customer name, item count, payment mode badge, total amount, and WhatsApp invoice link
+- Stock summary metrics cards, quick POS actions bar, low stock & 7-day expiry alert feeds, recent sales table, mobile-first responsive layout.
+
+### ✅ Feature 13: Product Management Pages UI (`13-product-pages.md`) — *Completed 2026-08-06*
+- **Typed Products Service**:
+  - Built [`frontend/src/services/products.ts`](file:///Users/thunder/Desktop/Kirstry-1.0/frontend/src/services/products.ts) connecting live to backend product CRUD, category dropdowns, and Open Food Facts barcode lookup.
+- **5 Complete Product Management Pages**:
+  - `ProductListPage` (`/products`): Search bar, category filter, responsive table with image preview, stock status badges, and soft-delete confirmation modal.
+  - `AddProductPage` (`/products/add`): Controlled form with single-column mobile input stacking (`<768px`) expanding to 2-column desktop grid (`>=768px`).
+  - `BarcodeLookupPage` (`/products/barcode-lookup`): Open Food Facts lookup by EAN/UPC barcode with "Use in Product Form" pre-filling CTA.
+  - `EditProductPage` (`/products/:id/edit`): Pre-filled product modification form.
+  - `ProductDetailPage` (`/products/:id`): Product profile, image preview, pricing breakdown (MRP, Selling Price, Purchase Cost, Margin %), and stock status.
 - **Verification & Builds**:
-  - `npm run test` passed 4/4 Vitest tests (including `DashboardPage.test.tsx`)
-  - `npm run build` completed with 0 errors
-  - DevTools MCP Verification: Tested populated dashboard live against Flask backend across Desktop (`1440x900`) and Mobile (`375x667`) viewports
+  - `npm run test` passed 5/5 Vitest tests (including `ProductListPage.test.tsx`).
+  - `npm run build` completed cleanly with 0 errors.
+  - DevTools MCP Verification across Desktop (`1440x900`) and Mobile (`375x667`).
 
 ---
 
 ## In Progress
 
-- **Feature 13: Product Management Pages** (`context/feature-specs/13-product-pages.md`)
-  - Target: Implement Product list page (`/products`) with search & category filter
-  - Target: Implement Add Product form (`/products/add`) with Supabase Storage image upload
-  - Target: Implement Barcode lookup page (`/products/barcode-lookup`) with Open Food Facts auto-fill
-  - Target: Implement Edit Product form (`/products/:id/edit`)
-  - Target: Implement Product detail page (`/products/:id`)
+- **Feature 14: Inventory & Stock Management Pages** (`context/feature-specs/14-inventory-pages.md`)
 
 ---
 
 ## Next Up
 
-1. `13-product-pages.md` — Product catalog, barcode camera scanner modal, add/edit form
-2. `14-inventory-pages.md` — Stock-in, batch list, stock adjustment form, low stock view
-3. `15-billing-pages.md` — POS billing UI, cart hook, payment mode selection, PDF invoice generator
+1. `14-inventory-pages.md` — Stock-in form, batch table, reconciliation adjustment form, low stock view
+2. `15-billing-pages.md` — POS billing UI, cart hook, payment mode selection, PDF invoice generator
+3. `16-khata-pages.md` — Customer credit ledger, entry creation form, payment collection modal
 
 ---
 
@@ -94,15 +91,14 @@ Update this file after every meaningful implementation change.
 
 ## Architecture Decisions
 
-1. **Mobile-First Responsive Dashboard Layout**: Cards stack in 2 columns / 1 column on mobile (<768px) and expand to 4 columns on desktop (>=768px). Alert feeds stack vertically on mobile and split into a 2-column side-by-side view on desktop.
-2. **Robust Array Fallbacks**: `useDashboard` hook uses `Array.isArray()` validation on all backend responses to prevent runtime errors when backend lists are empty or loading.
+1. **Barcode Pre-filling Flow**: `BarcodeLookupPage` passes barcode lookup results directly via React Router `navigate('/products/add', { state: ... })`, allowing the `AddProductPage` form to mount with pre-populated name, brand, barcode, MRP, and image URL.
 
 ---
 
 ## Session Notes
 
 - Frontend branch: `frontend`. Dev server port: `5173`.
-- Tests passing: 4/4 Vitest.
+- Tests passing: 5/5 Vitest.
 
 ---
 
