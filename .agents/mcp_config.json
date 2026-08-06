@@ -1,0 +1,59 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "name": "Supabase MCP Server",
+      "project_ref": "cssmoybkdzoxbntcrzfj",
+      "project_name": "Kirstry",
+      "region": "ap-south-1",
+      "status": "ACTIVE_HEALTHY",
+      "capabilities": [
+        "execute_sql",
+        "list_tables",
+        "apply_migration",
+        "get_logs",
+        "get_publishable_keys",
+        "generate_typescript_types",
+        "list_projects"
+      ]
+    },
+    "postman": {
+      "name": "Postman MCP Server",
+      "user": "ypagdhare2511",
+      "team": "Yash Pagdhare's Team",
+      "capabilities": [
+        "createCollection",
+        "runCollection",
+        "createEnvironment",
+        "searchPostmanElements",
+        "getCollections"
+      ]
+    },
+    "github": {
+      "name": "GitHub MCP Server",
+      "user": "yashpagdhare03",
+      "capabilities": [
+        "search_code",
+        "create_branch",
+        "create_pull_request",
+        "create_or_update_file",
+        "get_file_contents",
+        "issue_write",
+        "pull_request_review_write"
+      ]
+    },
+    "chrome-devtools": {
+      "name": "Chrome DevTools MCP",
+      "target_url": "http://localhost:5173",
+      "capabilities": [
+        "navigate_page",
+        "take_screenshot",
+        "evaluate_script",
+        "fill_form",
+        "click",
+        "lighthouse_audit",
+        "list_console_messages",
+        "list_network_requests"
+      ]
+    }
+  }
+}
