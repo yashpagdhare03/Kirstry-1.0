@@ -6,11 +6,11 @@ Update this file after every meaningful implementation change.
 
 ## Current Phase
 
-- **Phase 2: Frontend Setup & UI Development** — In Progress (Unit 10 of 22 completed)
+- **Phase 2: Frontend Setup & UI Development** — In Progress (Unit 11 of 22 completed)
 
 ## Current Goal
 
-- **Feature 11: Layout & Navigation UI** (`context/feature-specs/11-layout-navigation.md`) — Implement responsive desktop sidebar navigation (240px), mobile bottom bar, and top application bar.
+- **Feature 12: Dashboard Page UI** (`context/feature-specs/12-dashboard-page.md`) — Implement real-time summary cards, quick POS action links, recent sales list, low stock warnings, and expiry alerts banner.
 
 ---
 
@@ -45,48 +45,40 @@ Update this file after every meaningful implementation change.
 - **Comprehensive Frontend README Documentation**: Created [`backend/README.md`](file:///Users/thunder/Desktop/Kirstry-1.0/backend/README.md).
 
 ### ✅ Feature 10: Frontend Project Setup & Design System (`10-frontend-setup.md`) — *Completed 2026-08-06*
-- **Scaffolding & Environment**:
-  - React 19 + Vite + TypeScript project initialized in `frontend/`
-  - Installed packages: `react-router-dom`, `lucide-react`, `@radix-ui/react-dialog`, `@radix-ui/react-dropdown-menu`, `@radix-ui/react-popover`, `@radix-ui/react-select`, `recharts`
-  - Configured Vitest + Testing Library: `vitest`, `@testing-library/react`, `@testing-library/jest-dom`, `@testing-library/user-event`, `jsdom`
-- **Design Tokens & Base Styles**:
-  - Configured `frontend/src/index.css` with dark mode monochrome CSS custom properties (`--bg-base: #0A0A0A`, `--bg-surface: #141414`, `--bg-surface-alt: #1C1C1C`, `--accent-primary: #FFFFFF`, etc.) matching `ui-context.md`
-  - Imported Google Fonts (`Inter` for UI text, `JetBrains Mono` for monospace numbers/barcodes)
-- **TypeScript Models & API Client**:
-  - Created [`frontend/src/utils/types/index.ts`](file:///Users/thunder/Desktop/Kirstry-1.0/frontend/src/utils/types/index.ts) with TypeScript interfaces matching `backend/README.md`
-  - Created [`frontend/src/services/api.ts`](file:///Users/thunder/Desktop/Kirstry-1.0/frontend/src/services/api.ts) generic fetch client wrapper with automatic `X-Store-ID` header injection, `Content-Type: application/json`, and Bearer token handling
-- **Co-located Shared UI Components**:
-  - Built 9 shared components with co-located CSS Modules:
-    1. `Button` (`primary`, `secondary`, `outline`, `danger` variants; radius `8px`)
-    2. `Input` (label, helper, error state, `isMono` font)
-    3. `SearchInput` (embedded Lucide Search icon & clear button)
-    4. `Card` (surface `#141414`, border `#262626`, radius `10px`)
-    5. `Modal` (Radix UI `@radix-ui/react-dialog` with backdrop blur, radius `14px`)
-    6. `Table` (responsive wrapper, muted headers, hover row highlight)
-    7. `Badge` (`default`, `info`, `success`, `warning`, `error` variants; radius `6px`)
-    8. `EmptyState` (icon, title, message, CTA button)
-    9. `Skeleton` (shimmer loading animation)
+- React 19 + Vite + TypeScript, CSS custom properties dark mode tokens, 9 shared components, typed fetch API client, Vitest environment setup.
+
+### ✅ Feature 11: Layout & Navigation UI (`11-layout-navigation.md`) — *Completed 2026-08-06*
+- **Desktop Sidebar Navigation**:
+  - Built [`frontend/src/components/layout/Sidebar.tsx`](file:///Users/thunder/Desktop/Kirstry-1.0/frontend/src/components/layout/Sidebar.tsx) (240px fixed width, logo brand header, Lucide React icons, active link highlighting, border-right separator)
+- **Top Application Header**:
+  - Built [`frontend/src/components/layout/TopBar.tsx`](file:///Users/thunder/Desktop/Kirstry-1.0/frontend/src/components/layout/TopBar.tsx) with dynamic URL path title mapping, notification bell with unread count badge (fetches `GET /api/alerts/unread-count`), and Radix UI user profile dropdown menu (`@radix-ui/react-dropdown-menu`)
+- **Mobile Bottom Navigation**:
+  - Built [`frontend/src/components/layout/BottomNav.tsx`](file:///Users/thunder/Desktop/Kirstry-1.0/frontend/src/components/layout/BottomNav.tsx) for `<768px` viewports with 5 primary tabs (Dashboard, Billing, Inventory, Khata, More popover drawer)
+- **App Shell & Page Stubs**:
+  - Built [`frontend/src/components/layout/MainLayout.tsx`](file:///Users/thunder/Desktop/Kirstry-1.0/frontend/src/components/layout/MainLayout.tsx) wrapping React Router `<Outlet />` with responsive content padding
+  - Created placeholder page stubs in `frontend/src/pages/` for all 9 application modules
 - **Verification & Builds**:
-  - `npm run test` passed 2/2 Vitest component tests
+  - `npm run test` passed 3/3 Vitest tests (including `Sidebar.test.tsx`)
   - `npm run build` succeeded cleanly with 0 TypeScript compilation errors
-  - MCP Verification: Used `chrome-devtools-mcp` to navigate to `http://localhost:5173` and capture screenshot confirming dark mode monochrome aesthetic
+  - DevTools MCP Verification: Verified layout across 3 viewport breakpoints (Desktop `1440x900`, Tablet `1024x768`, Mobile `375x667`)
 
 ---
 
 ## In Progress
 
-- **Feature 11: Layout & Navigation UI** (`context/feature-specs/11-layout-navigation.md`)
-  - Target: Implement fixed-width desktop sidebar navigation (240px)
-  - Target: Implement mobile bottom navigation bar (5 primary tabs)
-  - Target: Implement top application bar with store name, global search input, notification badge counter, and user menu
+- **Feature 12: Dashboard Page UI** (`context/feature-specs/12-dashboard-page.md`)
+  - Target: Implement real-time summary cards (`total_products`, `total_inventory_value`, `low_stock_count`, `today_sales_revenue`)
+  - Target: Implement quick action links (POS Billing, Stock-In, Add Customer, Create PO)
+  - Target: Implement recent sales list table
+  - Target: Implement low stock and expiry alerts banner
 
 ---
 
 ## Next Up
 
-1. `11-layout-navigation.md` — Sidebar, Topbar, Mobile Bottom Nav, App Shell layout
-2. `12-dashboard-page.md` — Dashboard page UI, summary cards, recent sales, quick action links
-3. `13-product-pages.md` — Product catalog UI, barcode camera scanner modal, add/edit form
+1. `12-dashboard-page.md` — Dashboard summary metrics, quick actions, alerts banner
+2. `13-product-pages.md` — Product catalog UI, barcode camera scanner modal, add/edit form
+3. `14-inventory-pages.md` — Stock-in, batch list, stock adjustment form, low stock view
 
 ---
 
@@ -98,16 +90,15 @@ Update this file after every meaningful implementation change.
 
 ## Architecture Decisions
 
-1. **Monochrome Dark Mode Token System**: All components consume CSS custom properties declared in `index.css`. Hardcoded hex codes in component styles are strictly forbidden.
-2. **Co-located CSS Modules**: Each component owns its styling via a co-located `.module.css` file to guarantee complete encapsulation.
-3. **Headless Radix Primitives**: Radix UI dialog primitive used for `Modal` while preserving 100% custom CSS token styling.
+1. **Responsive Viewport Navigation**: Desktop viewports (`>=768px`) display the fixed 240px sidebar. Mobile viewports (`<768px`) hide the sidebar and render a fixed 5-icon bottom navigation bar with a Radix popover for secondary modules.
+2. **Dynamic Route Title Mapping**: TopBar listens to location changes and updates the header title dynamically to match the active module context.
 
 ---
 
 ## Session Notes
 
-- Frontend location: `frontend/`. Dev server port: `5173`.
-- `npm run test` and `npm run build` passing cleanly.
+- Frontend branch: `frontend`. Dev server port: `5173`.
+- Tests passing: 3/3 Vitest.
 
 ---
 
