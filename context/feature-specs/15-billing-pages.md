@@ -3,7 +3,7 @@
 # 15 — Billing & Invoice Pages
 
 ## Status
-Not Started
+Completed
 
 ## Objective
 Implement POS-style billing interface with product search, cart management, payment mode selection, invoice viewer, and sales history. The layout MUST be built with a **Mobile-First Responsive Design**, providing a fast handheld mobile POS workflow (`<768px`) with stacked search & bottom sticky cart bar, and expanding to a side-by-side split screen POS terminal on desktop screens (`>=768px`).
@@ -29,11 +29,11 @@ Pages & components:
 4. Integrate window print + ReportLab PDF download link.
 
 ## Acceptance Criteria
-- [ ] Mobile-First Responsive Design: POS billing interface provides 1-touch mobile adding & bottom sticky checkout (<768px) and transforms to desktop 2-column split screen (>=768px)
-- [ ] Cart dynamically updates subtotal, discount, and grand total
-- [ ] Creating bill submits payload, clears cart, and opens invoice viewer
-- [ ] WhatsApp share button opens formatted `wa.me` URL
-- [ ] Sales history lists past bills with view detail action
+- [x] Mobile-First Responsive Design: POS billing interface provides 1-touch mobile adding & bottom sticky checkout (<768px) and transforms to desktop 2-column split screen (>=768px)
+- [x] Cart dynamically updates subtotal, discount, and grand total
+- [x] Creating bill submits payload, clears cart, and opens invoice viewer
+- [x] WhatsApp share button opens formatted `wa.me` URL
+- [x] Sales history lists past bills with view detail action
 
 ## MCP Verification
 - Use `chrome-devtools-mcp` `resize_page` to test Mobile POS (375px) and Desktop POS Terminal (1440px) viewports

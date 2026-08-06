@@ -16,7 +16,10 @@ import { StockOutPage } from './pages/inventory/StockOutPage';
 import { AdjustmentPage } from './pages/inventory/AdjustmentPage';
 import { TransactionHistoryPage } from './pages/inventory/TransactionHistoryPage';
 import { BatchDetailPage } from './pages/inventory/BatchDetailPage';
-import { KhataPage } from './pages/KhataPage';
+import { CustomerListPage } from './pages/khata/CustomerListPage';
+import { AddCustomerPage } from './pages/khata/AddCustomerPage';
+import { CustomerDetailPage } from './pages/khata/CustomerDetailPage';
+import { OutstandingPage } from './pages/khata/OutstandingPage';
 import { SuppliersPage } from './pages/SuppliersPage';
 import { AnalyticsPage } from './pages/AnalyticsPage';
 import { SettingsPage } from './pages/SettingsPage';
@@ -43,7 +46,10 @@ export default function App() {
           <Route path="inventory/adjustment" element={<AdjustmentPage />} />
           <Route path="inventory/transactions" element={<TransactionHistoryPage />} />
           <Route path="inventory/batches/:product_id" element={<BatchDetailPage />} />
-          <Route path="khata" element={<KhataPage />} />
+          <Route path="khata" element={<CustomerListPage />} />
+          <Route path="khata/add" element={<AddCustomerPage />} />
+          <Route path="khata/outstanding" element={<OutstandingPage />} />
+          <Route path="khata/:customer_id" element={<CustomerDetailPage />} />
           <Route path="suppliers" element={<SuppliersPage />} />
           <Route path="analytics" element={<AnalyticsPage />} />
           <Route path="settings" element={<SettingsPage />} />

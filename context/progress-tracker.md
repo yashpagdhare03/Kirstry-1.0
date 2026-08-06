@@ -84,19 +84,34 @@ Update this file after every meaningful implementation change.
   - `npm run build` completed cleanly with 0 errors.
   - Pushed commit `1838571` to GitHub branch `frontend`.
 
+### ✅ Feature 15: Billing & Invoice Pages UI (`15-billing-pages.md`) — *Completed 2026-08-06*
+- **Cart State Hook (`useCart.ts`)**:
+  - Custom hook for line items, quantity stock bounds, discounts, payment modes (`cash`, `upi`, `credit`), customer selection, and grand totals.
+- **Typed Billing Service (`billing.ts`)**:
+  - Built [`frontend/src/services/billing.ts`](file:///Users/thunder/Desktop/Kirstry-1.0/frontend/src/services/billing.ts) handling `/billing/create`, `/billing/sales`, `/billing/sales/:id`, `/billing/daily-summary`, `/billing/invoice/:id/generate`, and `/billing/invoice/:id/share`.
+- **4 POS & Invoice Pages**:
+  - `NewBillPage` (`/billing/new`): POS split-screen terminal layout (Mobile: stacked search & bottom sticky cart bar; Desktop: 60/40 side-by-side split screen).
+  - `InvoiceViewPage` (`/billing/invoice/:sale_id`): Tax invoice receipt viewer with `window.print()`, ReportLab PDF download, and WhatsApp `wa.me` sharing.
+  - `SalesHistoryPage` (`/billing`): Historical counter sales table with payment mode filters (`All`, `Cash`, `UPI`, `Credit`).
+  - `DailySummaryPage` (`/billing/summary`): End-of-day sales revenue & payment mode breakdown dashboard.
+- **Verification & Builds**:
+  - `npm run test` passed 7/7 Vitest tests (including `SalesHistoryPage.test.tsx`).
+  - `npm run build` completed cleanly with 0 errors.
+  - Pushed commit `222c202` to GitHub branch `frontend`.
+
 ---
 
 ## In Progress
 
-- None (Feature 14 complete, ready for Feature 15 POS Billing Pages)
+- None (Feature 15 complete, ready for Feature 16 Digital Khata Pages)
 
 ---
 
 ## Next Up
 
-1. `15-billing-pages.md` — POS billing UI, cart hook, payment mode selection, PDF invoice generator
-2. `16-khata-pages.md` — Customer credit ledger, entry creation form, payment collection modal
-3. `17-supplier-pages.md` — Supplier directory, purchase order builder, WhatsApp sharing link
+1. `16-khata-pages.md` — Customer credit ledger, entry creation form, payment collection modal
+2. `17-supplier-pages.md` — Supplier directory, purchase order builder, WhatsApp sharing link
+3. `18-analytics-pages.md` — Sales reports, category distribution, fast/slow moving items charts
 
 ---
 
