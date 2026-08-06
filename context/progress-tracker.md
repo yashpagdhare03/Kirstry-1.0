@@ -112,19 +112,33 @@ Update this file after every meaningful implementation change.
   - `npm run build` completed cleanly with 0 errors.
   - Pushed commit `5835f03` to GitHub branch `frontend`.
 
+### ✅ Feature 17: Supplier Management & Purchase Orders Pages UI (`17-supplier-pages.md`) — *Completed 2026-08-06*
+- **Typed Supplier Service (`supplier.ts`)**:
+  - Built [`frontend/src/services/supplier.ts`](file:///Users/thunder/Desktop/Kirstry-1.0/frontend/src/services/supplier.ts) handling `/suppliers`, active PO deletion conflict handling (HTTP 409), `/purchase-orders`, status transitions (`draft` -> `sent` -> `received`), and WhatsApp sharing link generation.
+- **6 Supplier & Purchase Order Pages**:
+  - `SupplierListPage` (`/suppliers`): Directory of wholesale vendors with search, responsive mobile cards (`<768px`), desktop data table (`>=768px`), and active PO conflict protection.
+  - `AddSupplierPage` (`/suppliers/add`): Single-column mobile-first vendor registration form.
+  - `SupplierDetailPage` (`/suppliers/:id`): Supplier profile overview and linked PO history list.
+  - `CreatePurchaseOrderPage` (`/suppliers/:id/purchase-order/new`): Dynamic PO line-item builder wizard allowing shopkeepers to add/remove order items with calculated estimated totals.
+  - `PurchaseOrderListPage` (`/purchase-orders`): List of purchase orders with status filtering tabs (`All`, `Draft`, `Sent`, `Received`).
+  - `PurchaseOrderDetailPage` (`/purchase-orders/:id`): PO detail view with workflow status transition buttons (`Mark as Sent`, `Mark as Received`) and WhatsApp sharing.
+- **Verification & Builds**:
+  - `npm run test` passed 9/9 Vitest tests (including `SupplierListPage.test.tsx`).
+  - `npm run build` completed cleanly with 0 errors.
+  - Pushed commit `1437cd7` to GitHub branch `frontend`.
+
 ---
 
 ## In Progress
 
-- None (Feature 16 complete, ready for Feature 17 Supplier Management Pages)
+- None (Feature 17 complete, ready for Feature 18 Analytics Pages)
 
 ---
 
 ## Next Up
 
-1. `17-supplier-pages.md` — Supplier directory, purchase order builder, WhatsApp sharing link
-2. `18-analytics-pages.md` — Sales reports, category distribution, fast/slow moving items charts
-3. `19-settings-alerts-pages.md` — Store settings, user profile, notification center
+1. `18-analytics-pages.md` — Sales reports, category distribution, fast/slow moving items charts
+2. `19-settings-alerts-pages.md` — Store settings, user profile, notification center
 
 ---
 

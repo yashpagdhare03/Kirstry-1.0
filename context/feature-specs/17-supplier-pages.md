@@ -3,7 +3,7 @@
 # 17 — Supplier Management Pages
 
 ## Status
-Not Started
+Completed
 
 ## Objective
 Implement supplier directory, purchase order creation wizard, status tracking UI, and WhatsApp PO sharing button. The layout MUST be built with a **Mobile-First Responsive Design**, ensuring handheld mobile shopkeepers (`<768px`) can add suppliers and create POs on touch devices, scaling cleanly to desktop displays (`>=768px`).
@@ -29,11 +29,11 @@ Pages to create:
 4. Apply mobile-first CSS modules with responsive breakpoints (`@media (min-width: 768px)`).
 
 ## Acceptance Criteria
-- [ ] Mobile-First Responsive Design: Supplier cards, PO wizards, and status badges scale cleanly from mobile viewports (<768px) to desktop dashboards (>=768px)
-- [ ] Supplier CRUD works seamlessly
-- [ ] Purchase Order creation builds dynamic item JSON payload
-- [ ] Status updates (`draft` -> `sent` -> `received`) toggle valid UI actions
-- [ ] WhatsApp share button opens formatted order link
+- [x] Mobile-First Responsive Design: Supplier cards, PO wizards, and status badges scale cleanly from mobile viewports (<768px) to desktop dashboards (>=768px)
+- [x] Supplier CRUD works seamlessly
+- [x] Purchase Order creation builds dynamic item JSON payload
+- [x] Status updates (`draft` -> `sent` -> `received`) toggle valid UI actions
+- [x] WhatsApp share button opens formatted order link
 
 ## MCP Verification
 - Use `chrome-devtools-mcp` `resize_page` to test Mobile (375px) and Desktop (1440px) viewports
