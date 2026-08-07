@@ -3,10 +3,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { Bell, User, LogOut, ChevronDown } from 'lucide-react';
 import { api } from '../../services/api';
+import { useAuth } from '../../hooks/useAuth';
 import styles from './TopBar.module.css';
 
 const titleMap: Record<string, string> = {
   '/': 'Dashboard Overview',
+  '/dashboard': 'Dashboard Overview',
   '/billing': 'POS Billing & Invoicing',
   '/products': 'Products Catalog',
   '/inventory': 'Inventory & Stock Control',
@@ -23,6 +25,7 @@ export interface TopBarProps {
 export const TopBar: React.FC<TopBarProps> = ({ isCollapsed = false }) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const [unreadCount, setUnreadCount] = useState<number>(0);
 
   const pageTitle = titleMap[location.pathname] || 'Kirstry POS';
@@ -40,6 +43,21 @@ export const TopBar: React.FC<TopBarProps> = ({ isCollapsed = false }) => {
     }
     fetchUnreadCount();
   }, [location.pathname]);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
+  const getInitials = (name?: string, email?: string) => {
+    if (name) {
+      const parts = name.trim().split(' ');
+      if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+      return name.substring(0, 2).toUpperCase();
+    }
+    if (email) return email.substring(0, 2).toUpperCase();
+    return 'KP';
+  };
 
   return (
     <header className={`${styles.topBar} ${isCollapsed ? styles.collapsed : ''}`}>
@@ -61,10 +79,10 @@ export const TopBar: React.FC<TopBarProps> = ({ isCollapsed = false }) => {
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
             <button className={styles.userMenuTrigger} aria-label="User Profile">
-              <div className={styles.avatar}>YP</div>
+              <div className={styles.avatar}>{getInitials(user?.name, user?.email)}</div>
               <div className={styles.userInfo}>
-                <span className={styles.userName}>Yash Store</span>
-                <span className={styles.storeName}>Main Branch</span>
+                <span className={styles.userName}>{user?.name || user?.email?.split('@')[0] || 'Store Owner'}</span>
+                <span className={styles.storeName}>Active Store</span>
               </div>
               <ChevronDown size={14} strokeWidth={1.5} style={{ color: 'var(--text-muted)' }} />
             </button>
@@ -80,10 +98,10 @@ export const TopBar: React.FC<TopBarProps> = ({ isCollapsed = false }) => {
               <DropdownMenu.Item
                 className={styles.dropdownItem}
                 style={{ color: 'var(--state-error)' }}
-                onClick={() => navigate('/settings')}
+                onClick={handleLogout}
               >
                 <LogOut size={16} strokeWidth={1.5} />
-                <span>Logout</span>
+                <span>Logout Session</span>
               </DropdownMenu.Item>
             </DropdownMenu.Content>
           </DropdownMenu.Portal>
