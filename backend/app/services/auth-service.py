@@ -17,39 +17,23 @@ def sign_up_user(data: Dict[str, Any]) -> Dict[str, Any]:
     name = data.get("name") or email.split("@")[0].capitalize()
 
     supabase = get_supabase_client()
-    try:
-        res = supabase.auth.sign_up({"email": email, "password": password})
-        if res.user:
-            user_data = {
-                "id": res.user.id,
-                "email": res.user.email,
-                "name": name,
-                "created_at": datetime.now(timezone.utc).isoformat(),
-            }
-            token_data = {
-                "access_token": res.session.access_token if res.session else f"jwt-{res.user.id}",
-                "refresh_token": res.session.refresh_token if res.session else f"refresh-{res.user.id}",
-                "token_type": "bearer",
-            }
-            return {"user": user_data, "session": token_data, "has_store": False}
-    except Exception:
-        pass
+    res = supabase.auth.sign_up({"email": email, "password": password})
 
-    mock_user_id = f"user-{uuid.uuid4().hex[:8]}"
-    return {
-        "user": {
-            "id": mock_user_id,
-            "email": email,
-            "name": name,
-            "created_at": datetime.now(timezone.utc).isoformat(),
-        },
-        "session": {
-            "access_token": f"jwt-{mock_user_id}",
-            "refresh_token": f"refresh-{mock_user_id}",
-            "token_type": "bearer",
-        },
-        "has_store": False,
+    if not res.user:
+        raise ValueError("Failed to create user account with Supabase Auth.")
+
+    user_data = {
+        "id": res.user.id,
+        "email": res.user.email,
+        "name": name,
+        "created_at": datetime.now(timezone.utc).isoformat(),
     }
+    token_data = {
+        "access_token": res.session.access_token if res.session else "",
+        "refresh_token": res.session.refresh_token if res.session else "",
+        "token_type": "bearer",
+    }
+    return {"user": user_data, "session": token_data, "has_store": False}
 
 
 def sign_in_user(data: Dict[str, Any]) -> Dict[str, Any]:
@@ -58,55 +42,36 @@ def sign_in_user(data: Dict[str, Any]) -> Dict[str, Any]:
     password = data["password"]
 
     supabase = get_supabase_client()
-    try:
-        res = supabase.auth.sign_in_with_password({"email": email, "password": password})
-        if res.user and res.session:
-            # Check user store membership
-            mem_res = (
-                supabase.table("store_members")
-                .select("store_id, role")
-                .eq("user_id", res.user.id)
-                .execute()
-            )
-            store_data = None
-            if mem_res.data and len(mem_res.data) > 0:
-                sid = mem_res.data[0].get("store_id")
-                store_data = get_store_details(sid)
+    res = supabase.auth.sign_in_with_password({"email": email, "password": password})
 
-            return {
-                "user": {
-                    "id": res.user.id,
-                    "email": res.user.email,
-                    "role": mem_res.data[0].get("role", "owner") if (mem_res.data and len(mem_res.data) > 0) else "owner",
-                },
-                "session": {
-                    "access_token": res.session.access_token,
-                    "refresh_token": res.session.refresh_token,
-                    "token_type": "bearer",
-                },
-                "store": store_data,
-                "has_store": bool(store_data),
-            }
-    except Exception:
-        pass
+    if not res.user or not res.session:
+        raise ValueError("Invalid email or password.")
 
-    # Dev fallback check
-    sid = "00000000-0000-0000-0000-000000000001"
-    store_data = get_store_details(sid)
+    # Check user store membership
+    mem_res = (
+        supabase.table("store_members")
+        .select("store_id, role")
+        .eq("user_id", res.user.id)
+        .execute()
+    )
+    store_data = None
+    if mem_res.data and len(mem_res.data) > 0:
+        sid = mem_res.data[0].get("store_id")
+        store_data = get_store_details(sid)
+
     return {
         "user": {
-            "id": "user-owner-1",
-            "email": email,
-            "name": "Yash Owner",
-            "role": "owner",
+            "id": res.user.id,
+            "email": res.user.email,
+            "role": mem_res.data[0].get("role", "owner") if (mem_res.data and len(mem_res.data) > 0) else "owner",
         },
         "session": {
-            "access_token": "mock-owner-jwt",
-            "refresh_token": "mock-owner-refresh",
+            "access_token": res.session.access_token,
+            "refresh_token": res.session.refresh_token,
             "token_type": "bearer",
         },
         "store": store_data,
-        "has_store": True,
+        "has_store": bool(store_data),
     }
 
 
@@ -114,55 +79,39 @@ def authenticate_google_user(data: Dict[str, Any]) -> Dict[str, Any]:
     """Authenticate user via Google OAuth ID Token."""
     id_token = data.get("id_token")
 
+    if not id_token:
+        raise ValueError("Google ID token required.")
+
     supabase = get_supabase_client()
-    if id_token:
-        try:
-            res = supabase.auth.sign_in_with_id_token({"provider": "google", "token": id_token})
-            if res.user and res.session:
-                mem_res = (
-                    supabase.table("store_members")
-                    .select("store_id, role")
-                    .eq("user_id", res.user.id)
-                    .execute()
-                )
-                store_data = None
-                if mem_res.data and len(mem_res.data) > 0:
-                    sid = mem_res.data[0].get("store_id")
-                    store_data = get_store_details(sid)
+    res = supabase.auth.sign_in_with_id_token({"provider": "google", "token": id_token})
 
-                return {
-                    "user": {
-                        "id": res.user.id,
-                        "email": res.user.email,
-                        "role": mem_res.data[0].get("role", "owner") if (mem_res.data and len(mem_res.data) > 0) else "owner",
-                    },
-                    "session": {
-                        "access_token": res.session.access_token,
-                        "refresh_token": res.session.refresh_token,
-                        "token_type": "bearer",
-                    },
-                    "store": store_data,
-                    "has_store": bool(store_data),
-                }
-        except Exception:
-            pass
+    if not res.user or not res.session:
+        raise ValueError("Google authentication failed.")
 
-    sid = "00000000-0000-0000-0000-000000000001"
-    store_data = get_store_details(sid)
+    mem_res = (
+        supabase.table("store_members")
+        .select("store_id, role")
+        .eq("user_id", res.user.id)
+        .execute()
+    )
+    store_data = None
+    if mem_res.data and len(mem_res.data) > 0:
+        sid = mem_res.data[0].get("store_id")
+        store_data = get_store_details(sid)
+
     return {
         "user": {
-            "id": "user-google-1",
-            "email": "google.user@yashstore.com",
-            "name": "Google User",
-            "role": "owner",
+            "id": res.user.id,
+            "email": res.user.email,
+            "role": mem_res.data[0].get("role", "owner") if (mem_res.data and len(mem_res.data) > 0) else "owner",
         },
         "session": {
-            "access_token": "mock-owner-jwt",
-            "refresh_token": "mock-google-refresh",
+            "access_token": res.session.access_token,
+            "refresh_token": res.session.refresh_token,
             "token_type": "bearer",
         },
         "store": store_data,
-        "has_store": True,
+        "has_store": bool(store_data),
     }
 
 
@@ -174,7 +123,6 @@ def setup_user_store(user_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
     now_iso = datetime.now(timezone.utc).isoformat()
     store_record = {
         "id": new_store_id,
-        "store_id": new_store_id,
         "name": store_name,
         "address": data.get("address"),
         "gstin": data.get("gstin"),
@@ -182,53 +130,62 @@ def setup_user_store(user_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
         "created_at": now_iso,
     }
 
+    # Only include valid UUID for owner_id if user_id is a valid UUID
+    try:
+        uuid.UUID(user_id)
+        store_record["owner_id"] = user_id
+    except ValueError:
+        pass
+
     member_record = {
-        "id": f"mem-{uuid.uuid4().hex[:8]}",
+        "id": str(uuid.uuid4()),
         "store_id": new_store_id,
-        "user_id": user_id,
         "role": "owner",
-        "status": "active",
-        "joined_at": now_iso,
+        "created_at": now_iso,
     }
+    try:
+        uuid.UUID(user_id)
+        member_record["user_id"] = user_id
+    except ValueError:
+        pass
 
     supabase = get_supabase_client()
+    supabase.table("stores").insert(store_record).execute()
     try:
-        supabase.table("stores").insert(store_record).execute()
-        supabase.table("store_members").insert(member_record).execute()
+        if "user_id" in member_record:
+            supabase.table("store_members").insert(member_record).execute()
     except Exception:
         pass
 
+    store_record["store_id"] = new_store_id
     return store_record
 
 
 def refresh_user_token(refresh_token: str) -> Dict[str, Any]:
     """Refresh access token using refresh_token."""
     supabase = get_supabase_client()
-    try:
-        res = supabase.auth.refresh_session(refresh_token)
-        if res.session:
-            return {
-                "access_token": res.session.access_token,
-                "refresh_token": res.session.refresh_token,
-                "token_type": "bearer",
-            }
-    except Exception:
-        pass
+    res = supabase.auth.refresh_session(refresh_token)
+
+    if not res.session:
+        raise ValueError("Invalid refresh token.")
 
     return {
-        "access_token": "mock-owner-jwt-refreshed",
-        "refresh_token": refresh_token,
+        "access_token": res.session.access_token,
+        "refresh_token": res.session.refresh_token,
         "token_type": "bearer",
     }
 
 
 def get_user_profile(user_id: Optional[str], store_id: Optional[str], role: str = "owner", email: Optional[str] = None) -> Dict[str, Any]:
     """Return profile details of current authenticated user and store."""
+    if not user_id:
+        raise ValueError("Authenticated user ID required.")
+
     supabase = get_supabase_client()
     actual_store_id = store_id
     actual_role = role
 
-    if user_id and not actual_store_id:
+    if not actual_store_id:
         try:
             mem_res = (
                 supabase.table("store_members")
@@ -242,13 +199,12 @@ def get_user_profile(user_id: Optional[str], store_id: Optional[str], role: str 
         except Exception:
             pass
 
-    sid = actual_store_id or "00000000-0000-0000-0000-000000000001"
-    store_data = get_store_details(sid)
+    store_data = get_store_details(actual_store_id) if actual_store_id else None
 
     return {
         "user": {
-            "id": user_id or "user-owner-1",
-            "email": email or "owner@yashstore.com",
+            "id": user_id,
+            "email": email or "",
             "role": actual_role,
         },
         "store": store_data,

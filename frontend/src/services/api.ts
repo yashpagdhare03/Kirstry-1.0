@@ -1,17 +1,15 @@
 import type { ApiResponse } from '../utils/types';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
-const DEFAULT_STORE_ID = '00000000-0000-0000-0000-000000000001';
-
 export function getStoreId(): string {
   try {
     if (typeof localStorage !== 'undefined' && localStorage && typeof localStorage.getItem === 'function') {
-      return localStorage.getItem('kirstry_store_id') || DEFAULT_STORE_ID;
+      return localStorage.getItem('kirstry_store_id') || '';
     }
   } catch (e) {
     // Ignore storage errors
   }
-  return DEFAULT_STORE_ID;
+  return '';
 }
 
 export function setStoreId(storeId: string): void {

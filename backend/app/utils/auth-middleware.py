@@ -40,57 +40,48 @@ def require_auth(f: Callable[..., Any]) -> Callable[..., Any]:
         user_role: str = "owner"
 
         if token:
-            if token == "mock-owner-jwt":
-                user_id = "user-owner-1"
-                user_email = "owner@yashstore.com"
-                store_id = store_header or "00000000-0000-0000-0000-000000000001"
-                user_role = "owner"
-            elif token == "mock-staff-jwt":
-                user_id = "user-staff-2"
-                user_email = "staff@yashstore.com"
-                store_id = store_header or "00000000-0000-0000-0000-000000000001"
-                user_role = "staff"
-            else:
-                try:
-                    supabase = get_supabase_client()
-                    jwt_secret = Config.SUPABASE_JWT_SECRET
+            try:
+                supabase = get_supabase_client()
+                jwt_secret = Config.SUPABASE_JWT_SECRET
 
-                    # 1. Try PyJWT decode if SUPABASE_JWT_SECRET is configured
-                    if jwt_secret:
-                        try:
-                            payload = jwt.decode(token, jwt_secret, algorithms=["HS256"], options={"verify_aud": False})
-                            user_id = payload.get("sub")
-                            user_email = payload.get("email")
-                        except Exception:
-                            user_id = None
+                # 1. Try PyJWT decode if SUPABASE_JWT_SECRET is configured
+                if jwt_secret:
+                    try:
+                        payload = jwt.decode(token, jwt_secret, algorithms=["HS256"], options={"verify_aud": False})
+                        user_id = payload.get("sub")
+                        user_email = payload.get("email")
+                    except Exception:
+                        user_id = None
 
-                    # 2. Fallback to Supabase Auth API verification
-                    if not user_id:
-                        user_res = supabase.auth.get_user(token)
-                        if user_res and user_res.user:
-                            user_id = user_res.user.id
-                            user_email = user_res.user.email
+                # 2. Fallback to Supabase Auth API verification
+                if not user_id:
+                    user_res = supabase.auth.get_user(token)
+                    if user_res and user_res.user:
+                        user_id = user_res.user.id
+                        user_email = user_res.user.email
 
-                    if user_id:
-                        # Query store_members table for store_id and role
-                        res = (
-                            supabase.table("store_members")
-                            .select("store_id, role")
-                            .eq("user_id", user_id)
-                            .execute()
-                        )
-                        if res.data and len(res.data) > 0:
-                            store_id = res.data[0].get("store_id")
-                            user_role = res.data[0].get("role", "owner")
-                    else:
-                        return error_response("Invalid or expired authentication token", status_code=401)
-                except Exception as e:
-                    return error_response("Invalid authentication token", status_code=401)
+                if user_id:
+                    # Query store_members table for store_id and role
+                    res = (
+                        supabase.table("store_members")
+                        .select("store_id, role")
+                        .eq("user_id", user_id)
+                        .execute()
+                    )
+                    if res.data and len(res.data) > 0:
+                        store_id = res.data[0].get("store_id")
+                        user_role = res.data[0].get("role", "owner")
+                    elif store_header:
+                        store_id = store_header.strip()
+                else:
+                    return error_response("Invalid or expired authentication token", status_code=401)
+            except Exception:
+                return error_response("Invalid authentication token", status_code=401)
         elif store_header:
-            # Fallback for dev mode / tests passing X-Store-ID header
+            # Fallback for API integration tests passing X-Store-ID header
             store_id = store_header.strip()
             user_id = "user-default-1"
-            user_email = "owner@yashstore.com"
+            user_email = "owner@kirstrypos.com"
             user_role = request.headers.get("X-User-Role", "owner")
         else:
             return error_response("Authentication token required in Authorization header", status_code=401)

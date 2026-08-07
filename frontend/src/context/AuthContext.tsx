@@ -71,7 +71,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const [hasStore, setHasStore] = useState<boolean>(() => {
     const sid = getStoreId();
-    return Boolean(sid && sid !== '00000000-0000-0000-0000-000000000000');
+    return Boolean(sid && sid !== '');
   });
 
   const [loading, setLoading] = useState<boolean>(true);
@@ -99,6 +99,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => {
     setToken(null);
     setUser(null);
+    setHasStore(false);
+    setStoreIdState('');
     safeRemoveItem(AUTH_TOKEN_KEY);
     safeRemoveItem(REFRESH_TOKEN_KEY);
     safeRemoveItem(USER_KEY);
@@ -137,7 +139,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
       }
     } catch (err) {
-      // Keep session if API temporary error
+      // Token invalid or expired
+      logout();
     } finally {
       setLoading(false);
     }
@@ -169,15 +172,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const res = await authService.login({ email, password });
       if (res.success && res.data) {
         const { user: u, session: s, store } = res.data;
-        const sid = store?.id || getStoreId();
+        const sid = store?.id || '';
         saveAuthSession(s.access_token, s.refresh_token, u, (u.role as 'owner' | 'staff') || 'owner', sid);
         setHasStore(Boolean(store && store.id));
         return true;
       }
     } catch (err) {
-      // Fallback in case of server offline in dev mode
-      saveAuthSession('mock-owner-jwt', 'mock-owner-refresh', { id: 'user-owner-1', email, name: 'Store Owner' }, 'owner', getStoreId());
-      return true;
+      console.error('Login error:', err);
     }
     return false;
   };
@@ -192,9 +193,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return true;
       }
     } catch (err) {
-      saveAuthSession('mock-owner-jwt', 'mock-owner-refresh', { id: 'user-new-1', email, name: name || 'New Owner' }, 'owner');
-      setHasStore(false);
-      return true;
+      console.error('Signup error:', err);
     }
     return false;
   };
@@ -210,19 +209,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           return true;
         }
       }
-      // Trigger Supabase Google OAuth redirect
+      // Trigger Supabase Google OAuth redirect with prompt: 'select_account'
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: window.location.origin,
+          queryParams: {
+            prompt: 'select_account',
+          },
+          redirectTo: `${window.location.origin}/auth/callback`,
         },
       });
       if (error) throw error;
       return true;
     } catch (err) {
-      saveAuthSession('mock-owner-jwt', 'mock-google-refresh', { id: 'user-google-1', email: 'google@yashstore.com', name: 'Google User' }, 'owner', getStoreId());
-      return true;
+      console.error('Google Auth error:', err);
     }
+    return false;
   };
 
   const setupStore = async (payload: StoreSetupPayload): Promise<boolean> => {
@@ -238,11 +240,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return true;
       }
     } catch (err) {
-      const fallbackSid = '00000000-0000-0000-0000-000000000001';
-      setStoreId(fallbackSid);
-      setStoreIdState(fallbackSid);
-      setHasStore(true);
-      return true;
+      console.error('Store setup error:', err);
     }
     return false;
   };
