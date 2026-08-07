@@ -157,17 +157,29 @@ Update this file after every meaningful implementation change.
   - `npm run build` completed cleanly with 0 errors.
   - Pushed commit `4e87102` to GitHub branch `frontend`.
 
+### ✅ Feature 20: Auth Backend Integration & Middleware (`20-auth-backend.md`) — *Completed 2026-08-07*
+- **Auth Service & Schemas (`auth-service.py`, `auth-schema.py`)**:
+  - Implemented signup, login, Google OAuth ID token exchange, store setup wizard, token refresh, and user profile retrieval.
+- **Auth Middleware & Decorators (`auth-middleware.py`)**:
+  - Built `@require_auth` (Bearer JWT verification & `g` context population) and `@require_owner` (HTTP 403 staff rejection).
+- **Auth Routes (`auth-routes.py`)**:
+  - Registered `/api/auth/signup`, `/api/auth/login`, `/api/auth/google`, `/api/auth/store-setup`, `/api/auth/refresh`, and `/api/auth/me`.
+- **Verification & Builds**:
+  - Backend `pytest` passed 45/45 unit tests (including 8 tests in `test_auth.py`).
+  - Frontend `vitest` passed 11/11 tests.
+  - Pushed commit `a1af705` to GitHub branch `frontend`.
+
 ---
 
 ## In Progress
 
-- None (All core features 12 through 19 implemented and verified)
+- None (All core features 12 through 20 implemented and verified)
 
 ---
 
 ## Next Up
 
-- Feature development complete. All specs (12-19) fulfilled, tested, and pushed to `frontend` branch.
+- Feature development complete. All specs (12-20) fulfilled, tested, and pushed to `frontend` branch.
 
 ---
 
