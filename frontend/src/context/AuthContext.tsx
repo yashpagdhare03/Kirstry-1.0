@@ -15,6 +15,7 @@ interface AuthContextType {
   googleAuth: (idToken?: string) => Promise<boolean>;
   setupStore: (payload: StoreSetupPayload) => Promise<boolean>;
   logout: () => void;
+  fetchProfile: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -260,6 +261,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         googleAuth,
         setupStore,
         logout,
+        fetchProfile,
       }}
     >
       {children}

@@ -14,7 +14,7 @@ export const LandingPage: React.FC = () => {
       if (!hasStore) {
         navigate('/store-setup');
       } else {
-        navigate('/');
+        navigate('/dashboard');
       }
     } else {
       navigate('/login');
@@ -66,7 +66,7 @@ export const LandingPage: React.FC = () => {
         </p>
 
         <div className={styles.ctaGroup}>
-          <Button variant="primary" size="lg" onClick={() => navigate(token ? '/' : '/signup')} rightIcon={<ArrowRight size={18} />}>
+          <Button variant="primary" size="lg" onClick={() => navigate(token ? '/dashboard' : '/signup')} rightIcon={<ArrowRight size={18} />}>
             {token ? 'Go to Store Manager' : 'Start Free Store Account'}
           </Button>
           {!token && (

@@ -6,6 +6,8 @@ Verifies Bearer tokens, attaches user and store tenancy to Flask g, and enforces
 from functools import wraps
 from flask import request, g
 from typing import Callable, Any, Optional
+import jwt
+from app.config import Config
 from app.utils import error_response, get_supabase_client
 
 
@@ -51,11 +53,25 @@ def require_auth(f: Callable[..., Any]) -> Callable[..., Any]:
             else:
                 try:
                     supabase = get_supabase_client()
-                    user_res = supabase.auth.get_user(token)
-                    if user_res and user_res.user:
-                        user_id = user_res.user.id
-                        user_email = user_res.user.email
-                        
+                    jwt_secret = Config.SUPABASE_JWT_SECRET
+
+                    # 1. Try PyJWT decode if SUPABASE_JWT_SECRET is configured
+                    if jwt_secret:
+                        try:
+                            payload = jwt.decode(token, jwt_secret, algorithms=["HS256"], options={"verify_aud": False})
+                            user_id = payload.get("sub")
+                            user_email = payload.get("email")
+                        except Exception:
+                            user_id = None
+
+                    # 2. Fallback to Supabase Auth API verification
+                    if not user_id:
+                        user_res = supabase.auth.get_user(token)
+                        if user_res and user_res.user:
+                            user_id = user_res.user.id
+                            user_email = user_res.user.email
+
+                    if user_id:
                         # Query store_members table for store_id and role
                         res = (
                             supabase.table("store_members")

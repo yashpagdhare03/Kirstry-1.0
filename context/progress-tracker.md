@@ -198,17 +198,33 @@ Update this file after every meaningful implementation change.
   - `npm run build` completed cleanly with 0 errors.
   - Pushed commit `3d406a9` to GitHub branch `frontend`.
 
+### ✅ Production Auth Fixes & Landing Page — *Completed 2026-08-07*
+- **Real Supabase Client Integration (`@supabase/supabase-js`, `supabase.ts`)**:
+  - Installed `@supabase/supabase-js` and configured frontend Supabase singleton (`supabase.ts`).
+  - Integrated real `supabase.auth.signInWithOAuth({ provider: 'google' })` and auth state change listener (`onAuthStateChange`).
+- **Public Landing Page (`LandingPage.tsx`, `/welcome`)**:
+  - Built production-grade public Kirana POS landing page with hero banner, feature highlights grid (POS Billing, Expiry Alerts, Digital Khata, WhatsApp POs, Recharts Analytics), and CTA navigation buttons.
+- **Working Logout Action (`AccountTab.tsx`)**:
+  - Connected Logout button in `AccountTab.tsx` to `logout()` from `AuthContext`, clearing tokens, user session state, and Supabase auth session before redirecting to `/login`.
+- **Dynamic Per-User Store Isolation (`auth-service.py`, `auth-middleware.py`)**:
+  - Connected backend authentication to PostgreSQL `store_members` table so that each user dynamically resolves to their isolated store ID context rather than static fallback IDs.
+- **Verification & Builds**:
+  - Backend `pytest` passed **48/48 unit tests**.
+  - Frontend `vitest` passed **12/12 tests**.
+  - `npm run build` completed cleanly with 0 errors.
+  - Pushed commit `e3dc989` to GitHub branch `frontend`.
+
 ---
 
 ## In Progress
 
-- None (All core features 12 through 22 fully implemented, verified, and audited)
+- None (All core features and production authentication fixes complete)
 
 ---
 
 ## Next Up
 
-- 🎉 **Project Roadmap Complete**: All feature specifications (01 through 22) are 100% complete, fully tested, audited, and pushed to `frontend` branch.
+- 🎉 **Project Complete**: Merge `frontend` into `main` and deploy to production hosting (Vercel / Netlify + Render / Railway).
 
 ---
 

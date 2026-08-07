@@ -62,4 +62,9 @@ export const authService = {
   async getMe() {
     return api.get<{ user: AuthUser; store: any; has_store?: boolean }>('/auth/me');
   },
+
+  async syncProfile() {
+    return api.post<{ status: string; user: AuthUser; store?: any; has_store: boolean }>('/auth/sync-profile', {});
+  },
 };
+

@@ -1,10 +1,12 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { PublicOnlyRoute } from './components/PublicOnlyRoute';
 import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/auth/LoginPage';
 import { SignupPage } from './pages/auth/SignupPage';
 import { StoreSetupPage } from './pages/auth/StoreSetupPage';
+import { AuthCallbackPage } from './pages/auth/AuthCallbackPage';
 import { MainLayout } from './components/layout/MainLayout';
 import { DashboardPage } from './pages/DashboardPage';
 import { SalesHistoryPage } from './pages/billing/SalesHistoryPage';
@@ -41,10 +43,30 @@ export default function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          {/* Public Landing & Auth Routes */}
+          {/* Public Root Landing Page */}
+          <Route path="/" element={<LandingPage />} />
           <Route path="/welcome" element={<LandingPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
+
+          {/* Public Only Authentication Routes */}
+          <Route
+            path="/login"
+            element={
+              <PublicOnlyRoute>
+                <LoginPage />
+              </PublicOnlyRoute>
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <PublicOnlyRoute>
+                <SignupPage />
+              </PublicOnlyRoute>
+            }
+          />
+
+          {/* Supabase OAuth Redirect Callback */}
+          <Route path="/auth/callback" element={<AuthCallbackPage />} />
 
           {/* Protected Onboarding Wizard */}
           <Route
@@ -58,14 +80,13 @@ export default function App() {
 
           {/* Protected Application Layout & Pages */}
           <Route
-            path="/"
             element={
               <ProtectedRoute>
                 <MainLayout />
               </ProtectedRoute>
             }
           >
-            <Route index element={<DashboardPage />} />
+            <Route path="dashboard" element={<DashboardPage />} />
             <Route path="billing" element={<SalesHistoryPage />} />
             <Route path="billing/new" element={<NewBillPage />} />
             <Route path="billing/invoice/:sale_id" element={<InvoiceViewPage />} />
@@ -95,6 +116,9 @@ export default function App() {
             <Route path="settings" element={<SettingsPage />} />
             <Route path="alerts" element={<AlertsPage />} />
           </Route>
+
+          {/* Fallback unknown paths redirect to landing page */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
     </AuthProvider>

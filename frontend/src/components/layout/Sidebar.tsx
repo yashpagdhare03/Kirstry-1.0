@@ -22,7 +22,7 @@ export interface NavRoute {
 }
 
 export const navRoutes: NavRoute[] = [
-  { path: '/', label: 'Dashboard', icon: <LayoutDashboard size={20} strokeWidth={1.5} /> },
+  { path: '/dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} strokeWidth={1.5} /> },
   { path: '/billing', label: 'POS Billing', icon: <Receipt size={20} strokeWidth={1.5} /> },
   { path: '/products', label: 'Products', icon: <Package size={20} strokeWidth={1.5} /> },
   { path: '/inventory', label: 'Inventory', icon: <Boxes size={20} strokeWidth={1.5} /> },

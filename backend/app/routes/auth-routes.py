@@ -103,3 +103,21 @@ def get_me_route():
 
     profile = get_user_profile(user_id, store_id, role, email)
     return success_response(data=profile, message="User profile retrieved successfully")
+
+
+@auth_bp.route("/api/auth/sync-profile", methods=["POST"])
+@require_auth
+def sync_profile_route():
+    """Sync Supabase user profile & store membership upon OAuth sign-in."""
+    user_id = getattr(g, "user_id", None)
+    store_id = getattr(g, "store_id", None)
+    role = getattr(g, "user_role", "owner")
+    email = getattr(g, "user_email", None)
+
+    profile = get_user_profile(user_id, store_id, role, email)
+    status = "exists" if profile.get("has_store") else "created"
+    return success_response(
+        data={"status": status, **profile},
+        message="Profile synchronized successfully",
+    )
+
