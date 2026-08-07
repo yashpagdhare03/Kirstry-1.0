@@ -3,7 +3,7 @@
 # 18 — Analytics Pages
 
 ## Status
-Not Started
+Completed
 
 ## Objective
 Implement analytics views using Recharts for fast-moving items, slow-moving items, sales trends line charts, and inventory category distribution. The layout MUST be built with a **Mobile-First Responsive Design**, ensuring charts wrap inside Recharts `ResponsiveContainer` and adapt cleanly to small touchscreens (`<768px`) as well as widescreen desktop displays (`>=768px`).
@@ -31,11 +31,11 @@ Pages & components:
 3. Use mobile-first CSS modules with responsive breakpoints (`@media (min-width: 768px)`).
 
 ## Acceptance Criteria
-- [ ] Mobile-First Responsive Design: Recharts analytics charts, tooltips, and tab bars scale fluidly across mobile viewports (<768px) with zero horizontal overflow
-- [ ] All 4 analytics sub-pages load data from backend analytics APIs
-- [ ] Recharts line, bar, and pie charts render correctly with dark theme styling
-- [ ] Period filter (7d, 30d, 90d) updates chart and table data dynamically
-- [ ] Charts scale responsively across desktop and mobile screens
+- [x] Mobile-First Responsive Design: Recharts analytics charts, tooltips, and tab bars scale fluidly across mobile viewports (<768px) with zero horizontal overflow
+- [x] All 4 analytics sub-pages load data from backend analytics APIs
+- [x] Recharts line, bar, and pie charts render correctly with dark theme styling
+- [x] Period filter (7d, 30d, 90d) updates chart and table data dynamically
+- [x] Charts scale responsively across desktop and mobile screens
 
 ## MCP Verification
 - Use `chrome-devtools-mcp` `resize_page` to test Mobile (375px) and Desktop (1440px) viewports

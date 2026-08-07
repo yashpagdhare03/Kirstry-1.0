@@ -16,6 +16,7 @@ from app.routes import (
     dashboard_bp,
     analytics_bp,
     alert_bp,
+    store_bp,
 )
 
 
@@ -46,5 +47,6 @@ def create_app(config_class=Config) -> Flask:
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(analytics_bp)
     app.register_blueprint(alert_bp)
+    app.register_blueprint(store_bp)
 
     return app

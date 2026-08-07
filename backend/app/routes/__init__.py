@@ -32,6 +32,9 @@ analytics_bp = analytics_routes_module.analytics_bp
 alert_routes_module = importlib.import_module("app.routes.alert-routes")
 alert_bp = alert_routes_module.alert_bp
 
+store_routes_module = importlib.import_module("app.routes.store-routes")
+store_bp = store_routes_module.store_bp
+
 __all__ = [
     "health_bp",
     "product_bp",
@@ -42,4 +45,5 @@ __all__ = [
     "dashboard_bp",
     "analytics_bp",
     "alert_bp",
+    "store_bp",
 ]

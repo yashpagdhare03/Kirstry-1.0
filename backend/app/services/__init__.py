@@ -83,6 +83,13 @@ mark_alert_read = alert_service_module.mark_alert_read
 mark_all_alerts_read = alert_service_module.mark_all_alerts_read
 get_unread_count = alert_service_module.get_unread_count
 
+store_service_module = importlib.import_module("app.services.store-service")
+get_store_details = store_service_module.get_store_details
+update_store_details = store_service_module.update_store_details
+get_store_members = store_service_module.get_store_members
+invite_store_member = store_service_module.invite_store_member
+remove_store_member = store_service_module.remove_store_member
+
 __all__ = [
     "lookup_barcode",
     "upload_product_image",
@@ -140,4 +147,9 @@ __all__ = [
     "mark_alert_read",
     "mark_all_alerts_read",
     "get_unread_count",
+    "get_store_details",
+    "update_store_details",
+    "get_store_members",
+    "invite_store_member",
+    "remove_store_member",
 ]
