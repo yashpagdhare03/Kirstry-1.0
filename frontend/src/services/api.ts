@@ -1,6 +1,7 @@
 import type { ApiResponse } from '../utils/types';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
+
 export function getStoreId(): string {
   try {
     if (typeof localStorage !== 'undefined' && localStorage && typeof localStorage.getItem === 'function') {
@@ -35,13 +36,14 @@ export function getAuthToken(): string | null {
 
 export interface RequestOptions extends RequestInit {
   params?: Record<string, string | number | boolean | undefined | null>;
+  silentErrors?: boolean;
 }
 
 export async function request<T = any>(
   endpoint: string,
   options: RequestOptions = {}
 ): Promise<ApiResponse<T>> {
-  const { params, headers: customHeaders, ...customOptions } = options;
+  const { params, headers: customHeaders, silentErrors = false, ...customOptions } = options;
 
   let url = `${API_BASE_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
 
@@ -75,12 +77,17 @@ export async function request<T = any>(
     const data: ApiResponse<T> = await response.json();
 
     if (!response.ok || !data.success) {
-      throw new Error(data.message || `Request failed with status ${response.status}`);
+      const err = new Error(data.message || `Request failed with status ${response.status}`);
+      (err as any).status = response.status;
+      throw err;
     }
 
     return data;
   } catch (error: any) {
-    console.error(`API Error [${endpoint}]:`, error);
+    // Suppress console error output for silent requests (e.g. auth check)
+    if (!silentErrors && endpoint !== '/auth/me') {
+      console.warn(`API Request [${endpoint}]:`, error?.message || error);
+    }
     throw error;
   }
 }

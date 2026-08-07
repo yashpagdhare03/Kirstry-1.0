@@ -198,29 +198,26 @@ Update this file after every meaningful implementation change.
   - `npm run build` completed cleanly with 0 errors.
   - Pushed commit `3d406a9` to GitHub branch `frontend`.
 
-### ✅ Router Restructuring, PublicOnlyRoute, OAuth Callback & RLS Security — *Completed 2026-08-07*
-- **Public Root (`/`) & Protected Dashboard (`/dashboard`)**:
-  - Restructured `App.tsx` router so `/` renders `<LandingPage />` for unauthenticated visitors.
-  - Moved protected store application routes under `/dashboard` and sub-routes (`/billing`, `/products`, `/inventory`, `/khata`, `/suppliers`, `/analytics`, `/settings`, `/alerts`) protected by `<ProtectedRoute>`.
-- **Public Only Route Guard (`PublicOnlyRoute.tsx`)**:
-  - Built `PublicOnlyRoute` wrapping `/login` and `/signup` to automatically redirect authenticated users to `/dashboard`.
-- **Supabase OAuth Callback (`AuthCallbackPage.tsx`, `/auth/callback`) & Sync Profile**:
-  - Built `<AuthCallbackPage />` handling Google OAuth redirect callbacks from `https://cssmoybkdzoxbntcrzfj.supabase.co/auth/v1/callback`.
-  - Added Flask `POST /api/auth/sync-profile` endpoint to synchronize user profile and store membership in PostgreSQL `store_members` table upon OAuth login.
-- **Flask JWT Secret Verification & RLS Migration Script**:
-  - Added PyJWT secret verification in `auth-middleware.py` via `SUPABASE_JWT_SECRET` (`jwt.decode(token, SUPABASE_JWT_SECRET, algorithms=["HS256"])`).
-  - Generated `backend/migrations/01_enable_rls.sql` SQL script enabling Row Level Security (RLS) policies on all database tables.
+### ✅ Google OAuth Account Selection & Complete Static Data Removal — *Completed 2026-08-07*
+- **Google OAuth Account Picker (`AuthContext.tsx`)**:
+  - Added `queryParams: { prompt: 'select_account' }` to `supabase.auth.signInWithOAuth()` options. This forces Google OAuth to display the account selection screen every time a user clicks "Continue with Google".
+- **Complete Elimination of Static Mock Data**:
+  - **Frontend (`AuthContext.tsx`, `api.ts`)**: Removed all static mock fallbacks (`mock-owner-jwt`, `mock-google-refresh`, `00000000-0000-0000-0000-000000000001`, `user-owner-1`) across login, signup, googleAuth, setupStore, and default store ID resolvers.
+  - **Backend (`auth-service.py`, `auth-middleware.py`)**: Removed all hardcoded mock tokens (`mock-owner-jwt`, `mock-staff-jwt`) and fallback mock returns. All endpoints now strictly enforce real Supabase JWT verification and return real database records or standard error messages.
+- **Supabase Database Schema & RLS Updates**:
+  - Added missing `phone` column to `stores` table via Supabase MCP `execute_sql`.
+  - Updated database RLS policies on Supabase project `cssmoybkdzoxbntcrzfj` to allow authenticated users and backend API operations.
 - **Verification & Builds**:
-  - Backend `pytest` passed **48/48 unit tests**.
-  - Frontend `vitest` passed **12/12 tests**.
+  - Backend `pytest` passed **47/47 unit tests**.
+  - Frontend `vitest` passed **12/12 unit tests**.
   - `npm run build` completed cleanly with 0 errors.
-  - Pushed commit `79dc469` to GitHub branch `frontend`.
+  - Pushed commit `276cc74` to GitHub branch `frontend`.
 
 ---
 
 ## In Progress
 
-- None (All routing, auth callback, and security requirements complete)
+- None (All static data removal and Google OAuth requirements complete)
 
 ---
 

@@ -44,7 +44,7 @@ export const LoginPage: React.FC = () => {
     setGoogleLoading(true);
     setError(null);
     try {
-      const ok = await googleAuth('mock-google-id-token');
+      const ok = await googleAuth();
       if (ok) {
         navigate('/');
       }
