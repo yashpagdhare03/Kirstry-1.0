@@ -5,7 +5,7 @@ Handles store metadata updates, staff invitations, member listing, and access re
 
 from flask import Blueprint, request
 from pydantic import ValidationError
-from app.utils import success_response, error_response, get_request_store_id
+from app.utils import success_response, error_response, get_request_store_id, require_auth, require_owner
 from app.schemas import UpdateStoreSchema, InviteStoreMemberSchema
 from app.services import (
     get_store_details,
@@ -19,6 +19,7 @@ store_bp = Blueprint("store", __name__)
 
 
 @store_bp.route("/api/store", methods=["GET"])
+@require_auth
 def get_store_route():
     """Get store profile details."""
     store_id = get_request_store_id()
@@ -30,6 +31,7 @@ def get_store_route():
 
 
 @store_bp.route("/api/store", methods=["PUT"])
+@require_owner
 def update_store_route():
     """Update store profile details (owner only)."""
     store_id = get_request_store_id()
@@ -47,6 +49,7 @@ def update_store_route():
 
 
 @store_bp.route("/api/store/members", methods=["GET"])
+@require_auth
 def get_members_route():
     """List staff and owner members of store."""
     store_id = get_request_store_id()
@@ -58,6 +61,7 @@ def get_members_route():
 
 
 @store_bp.route("/api/store/members/invite", methods=["POST"])
+@require_owner
 def invite_member_route():
     """Invite a new staff member by email (owner only)."""
     store_id = get_request_store_id()
@@ -75,6 +79,7 @@ def invite_member_route():
 
 
 @store_bp.route("/api/store/members/<member_id>", methods=["DELETE"])
+@require_owner
 def delete_member_route(member_id: str):
     """Revoke staff member access (owner only). Prevents owner self-deletion."""
     store_id = get_request_store_id()

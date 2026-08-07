@@ -90,6 +90,14 @@ get_store_members = store_service_module.get_store_members
 invite_store_member = store_service_module.invite_store_member
 remove_store_member = store_service_module.remove_store_member
 
+auth_service_module = importlib.import_module("app.services.auth-service")
+sign_up_user = auth_service_module.sign_up_user
+sign_in_user = auth_service_module.sign_in_user
+authenticate_google_user = auth_service_module.authenticate_google_user
+setup_user_store = auth_service_module.setup_user_store
+refresh_user_token = auth_service_module.refresh_user_token
+get_user_profile = auth_service_module.get_user_profile
+
 __all__ = [
     "lookup_barcode",
     "upload_product_image",
@@ -152,4 +160,10 @@ __all__ = [
     "get_store_members",
     "invite_store_member",
     "remove_store_member",
+    "sign_up_user",
+    "sign_in_user",
+    "authenticate_google_user",
+    "setup_user_store",
+    "refresh_user_token",
+    "get_user_profile",
 ]
