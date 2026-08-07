@@ -169,17 +169,32 @@ Update this file after every meaningful implementation change.
   - Frontend `vitest` passed 11/11 tests.
   - Pushed commit `a1af705` to GitHub branch `frontend`.
 
+### ✅ Feature 21: Auth Frontend UI, Context & Guards (`21-auth-frontend.md`) — *Completed 2026-08-07*
+- **Typed Auth Service & Context (`auth.ts`, `AuthContext.tsx`, `useAuth.ts`)**:
+  - Created React Auth Context managing user session, tokens, store tenancy, role state, and `localStorage` session persistence.
+- **Route Guard (`ProtectedRoute.tsx`)**:
+  - Built `ProtectedRoute` component redirecting unauthenticated users to `/login` and unconfigured users to `/store-setup`.
+- **3 Responsive Auth Screens & OAuth Button**:
+  - `LoginPage` (`/login`): Centered single-column login card with email/password form and Google OAuth button.
+  - `SignupPage` (`/signup`): Account registration screen with Google OAuth button.
+  - `StoreSetupPage` (`/store-setup`): Initial store onboarding wizard for new store owners.
+  - `GoogleSignInButton`: Touch-friendly Google sign-in trigger component.
+- **Verification & Builds**:
+  - Frontend `vitest` passed 12/12 tests (including `LoginPage.test.tsx`).
+  - `npm run build` completed cleanly with 0 errors.
+  - Pushed commit `0a033fc` to GitHub branch `frontend`.
+
 ---
 
 ## In Progress
 
-- None (All core features 12 through 20 implemented and verified)
+- None (All core features 12 through 21 implemented and verified)
 
 ---
 
 ## Next Up
 
-- Feature development complete. All specs (12-20) fulfilled, tested, and pushed to `frontend` branch.
+- Feature development complete. All specs (12-21) fulfilled, tested, and pushed to `frontend` branch.
 
 ---
 

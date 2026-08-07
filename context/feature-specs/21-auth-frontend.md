@@ -3,7 +3,7 @@
 # 21 — Auth Frontend (Login, Signup, Route Guards)
 
 ## Status
-Not Started
+Completed
 
 ## Objective
 Implement Login page, Signup page, Store Setup wizard, AuthContext, route guards, and token management in React. The authentication screens MUST be built with a **Mobile-First Responsive Design**, providing centered touch-friendly auth cards on mobile (`<768px`) that scale elegantly on desktop screens (`>=768px`).
@@ -30,12 +30,12 @@ Components & Pages:
 5. Apply mobile-first CSS modules with responsive breakpoints (`@media (min-width: 768px)`).
 
 ## Acceptance Criteria
-- [ ] Mobile-First Responsive Design: Login, Signup, and Store Setup onboarding cards fit mobile screens (<768px) with zero horizontal scroll and centered desktop layouts (>=768px)
-- [ ] Login with email/password authenticates and redirects to `/`
-- [ ] Google OAuth sign-in flow completes successfully
-- [ ] Signup redirects new user to `/store-setup` onboarding wizard
-- [ ] `ProtectedRoute` blocks unauthenticated access to app pages
-- [ ] Session persists across page refreshes
+- [x] Mobile-First Responsive Design: Login, Signup, and Store Setup onboarding cards fit mobile screens (<768px) with zero horizontal scroll and centered desktop layouts (>=768px)
+- [x] Login with email/password authenticates and redirects to `/`
+- [x] Google OAuth sign-in flow completes successfully
+- [x] Signup redirects new user to `/store-setup` onboarding wizard
+- [x] `ProtectedRoute` blocks unauthenticated access to app pages
+- [x] Session persists across page refreshes
 
 ## MCP Verification
 - Use `chrome-devtools-mcp` `resize_page` to test Mobile (375px) and Desktop (1440px) viewports
