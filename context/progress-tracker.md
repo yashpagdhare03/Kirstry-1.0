@@ -198,27 +198,29 @@ Update this file after every meaningful implementation change.
   - `npm run build` completed cleanly with 0 errors.
   - Pushed commit `3d406a9` to GitHub branch `frontend`.
 
-### ✅ Production Auth Fixes & Landing Page — *Completed 2026-08-07*
-- **Real Supabase Client Integration (`@supabase/supabase-js`, `supabase.ts`)**:
-  - Installed `@supabase/supabase-js` and configured frontend Supabase singleton (`supabase.ts`).
-  - Integrated real `supabase.auth.signInWithOAuth({ provider: 'google' })` and auth state change listener (`onAuthStateChange`).
-- **Public Landing Page (`LandingPage.tsx`, `/welcome`)**:
-  - Built production-grade public Kirana POS landing page with hero banner, feature highlights grid (POS Billing, Expiry Alerts, Digital Khata, WhatsApp POs, Recharts Analytics), and CTA navigation buttons.
-- **Working Logout Action (`AccountTab.tsx`)**:
-  - Connected Logout button in `AccountTab.tsx` to `logout()` from `AuthContext`, clearing tokens, user session state, and Supabase auth session before redirecting to `/login`.
-- **Dynamic Per-User Store Isolation (`auth-service.py`, `auth-middleware.py`)**:
-  - Connected backend authentication to PostgreSQL `store_members` table so that each user dynamically resolves to their isolated store ID context rather than static fallback IDs.
+### ✅ Router Restructuring, PublicOnlyRoute, OAuth Callback & RLS Security — *Completed 2026-08-07*
+- **Public Root (`/`) & Protected Dashboard (`/dashboard`)**:
+  - Restructured `App.tsx` router so `/` renders `<LandingPage />` for unauthenticated visitors.
+  - Moved protected store application routes under `/dashboard` and sub-routes (`/billing`, `/products`, `/inventory`, `/khata`, `/suppliers`, `/analytics`, `/settings`, `/alerts`) protected by `<ProtectedRoute>`.
+- **Public Only Route Guard (`PublicOnlyRoute.tsx`)**:
+  - Built `PublicOnlyRoute` wrapping `/login` and `/signup` to automatically redirect authenticated users to `/dashboard`.
+- **Supabase OAuth Callback (`AuthCallbackPage.tsx`, `/auth/callback`) & Sync Profile**:
+  - Built `<AuthCallbackPage />` handling Google OAuth redirect callbacks from `https://cssmoybkdzoxbntcrzfj.supabase.co/auth/v1/callback`.
+  - Added Flask `POST /api/auth/sync-profile` endpoint to synchronize user profile and store membership in PostgreSQL `store_members` table upon OAuth login.
+- **Flask JWT Secret Verification & RLS Migration Script**:
+  - Added PyJWT secret verification in `auth-middleware.py` via `SUPABASE_JWT_SECRET` (`jwt.decode(token, SUPABASE_JWT_SECRET, algorithms=["HS256"])`).
+  - Generated `backend/migrations/01_enable_rls.sql` SQL script enabling Row Level Security (RLS) policies on all database tables.
 - **Verification & Builds**:
   - Backend `pytest` passed **48/48 unit tests**.
   - Frontend `vitest` passed **12/12 tests**.
   - `npm run build` completed cleanly with 0 errors.
-  - Pushed commit `e3dc989` to GitHub branch `frontend`.
+  - Pushed commit `79dc469` to GitHub branch `frontend`.
 
 ---
 
 ## In Progress
 
-- None (All core features and production authentication fixes complete)
+- None (All routing, auth callback, and security requirements complete)
 
 ---
 
