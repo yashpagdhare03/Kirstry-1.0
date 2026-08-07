@@ -1,0 +1,177 @@
+.topBar {
+  height: 60px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 240px;
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border-default);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  gap: 12px;
+  z-index: 90;
+  user-select: none;
+  transition: left var(--transition-normal);
+}
+
+.collapsed {
+  left: 68px;
+}
+
+@media (max-width: 768px) {
+  .topBar {
+    left: 0 !important;
+    padding: 0 16px;
+  }
+}
+
+.pageTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 480px) {
+  .pageTitle {
+    font-size: 15px;
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.iconBtn {
+  position: relative;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  touch-action: manipulation;
+}
+
+.iconBtn:hover, .iconBtn:active {
+  color: var(--text-primary);
+  background-color: var(--bg-surface-alt);
+}
+
+.badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 8px;
+  height: 8px;
+  background-color: var(--state-error);
+  border-radius: 50%;
+}
+
+.userMenuTrigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-fast);
+  touch-action: manipulation;
+}
+
+.userMenuTrigger:hover, .userMenuTrigger:active {
+  background-color: var(--bg-surface-alt);
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--bg-surface-alt);
+  border: 1px solid var(--border-default);
+  color: var(--accent-primary);
+  font-weight: 600;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+@media (max-width: 600px) {
+  .userInfo {
+    display: none;
+  }
+}
+
+.userName {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.storeName {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.dropdownContent {
+  min-width: 180px;
+  background-color: var(--bg-surface-alt);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 6px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  animation: fadeIn 150ms ease-out;
+  z-index: 1000;
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+}
+
+.dropdownItem:hover, .dropdownItem:focus {
+  background-color: var(--border-default);
+}
+
+.dropdownSeparator {
+  height: 1px;
+  background-color: var(--border-default);
+  margin: 4px 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}

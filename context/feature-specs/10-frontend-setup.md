@@ -3,7 +3,7 @@
 # 10 — Frontend Project Setup & Design System
 
 ## Status
-Not Started
+Completed
 
 ## Objective
 Scaffold the React + Vite + TypeScript project and implement the design system with CSS custom properties and shared components.
@@ -28,11 +28,11 @@ None — frontend can be scaffolded independently.
 5. Implement `api.ts` wrapper adding `Content-Type: application/json` and token headers
 
 ## Acceptance Criteria
-- [ ] `npm run dev` starts dev server on port 5173
-- [ ] `index.css` defines all tokens (`--bg-base`, `--bg-surface`, `--accent-primary`, etc.)
-- [ ] Shared components render clean monochrome design matching `ui-context.md`
-- [ ] TypeScript strict mode compiles without errors
-- [ ] `npm run build` succeeds cleanly
+- [x] `npm run dev` starts dev server on port 5173
+- [x] `index.css` defines all tokens (`--bg-base`, `--bg-surface`, `--accent-primary`, etc.)
+- [x] Shared components render clean monochrome design matching `ui-context.md`
+- [x] TypeScript strict mode compiles without errors
+- [x] `npm run build` succeeds cleanly
 
 ## MCP Verification
 - Use `chrome-devtools-mcp` to navigate to `localhost:5173` and capture screenshot of design tokens

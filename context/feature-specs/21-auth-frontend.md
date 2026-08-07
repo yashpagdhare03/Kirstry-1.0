@@ -6,7 +6,7 @@
 Not Started
 
 ## Objective
-Implement Login page, Signup page, Store Setup wizard, AuthContext, route guards, and token management in React.
+Implement Login page, Signup page, Store Setup wizard, AuthContext, route guards, and token management in React. The authentication screens MUST be built with a **Mobile-First Responsive Design**, providing centered touch-friendly auth cards on mobile (`<768px`) that scale elegantly on desktop screens (`>=768px`).
 
 ## Depends On
 - 10-frontend-setup.md
@@ -17,8 +17,8 @@ Implement Login page, Signup page, Store Setup wizard, AuthContext, route guards
 Components & Pages:
 1. `AuthContext.tsx` + `useAuth.ts` — React Context managing user session, tokens, store ID, and role state
 2. `ProtectedRoute.tsx` — Route guard redirecting unauthenticated users to `/login` and new users to `/store-setup`
-3. `LoginPage.tsx` (`/login`) — Email/password login form + Google Sign-In button
-4. `SignupPage.tsx` (`/signup`) — Account creation form + Google Sign-In button
+3. `LoginPage.tsx` (`/login`) — Email/password login form + Google Sign-In button (mobile-first single column card)
+4. `SignupPage.tsx` (`/signup`) — Account creation form + Google Sign-In button (mobile-first single column card)
 5. `StoreSetupPage.tsx` (`/store-setup`) — Initial store onboarding wizard (name, address, GSTIN)
 6. `GoogleSignInButton.tsx` — Supabase OAuth sign-in trigger component
 
@@ -27,8 +27,10 @@ Components & Pages:
 2. In `api.ts`, intercept all outgoing requests to inject `Authorization: Bearer <token>`.
 3. Handle 401 API responses by attempting silent token refresh or redirecting to `/login`.
 4. Persist auth session token in `localStorage`.
+5. Apply mobile-first CSS modules with responsive breakpoints (`@media (min-width: 768px)`).
 
 ## Acceptance Criteria
+- [ ] Mobile-First Responsive Design: Login, Signup, and Store Setup onboarding cards fit mobile screens (<768px) with zero horizontal scroll and centered desktop layouts (>=768px)
 - [ ] Login with email/password authenticates and redirects to `/`
 - [ ] Google OAuth sign-in flow completes successfully
 - [ ] Signup redirects new user to `/store-setup` onboarding wizard
@@ -36,6 +38,7 @@ Components & Pages:
 - [ ] Session persists across page refreshes
 
 ## MCP Verification
+- Use `chrome-devtools-mcp` `resize_page` to test Mobile (375px) and Desktop (1440px) viewports
 - Use `chrome-devtools-mcp` to test complete login -> store setup -> dashboard workflow
 - Use `chrome-devtools-mcp` to inspect Network headers and verify `Authorization: Bearer` token present
 

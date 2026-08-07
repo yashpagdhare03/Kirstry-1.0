@@ -19,6 +19,7 @@ get_products = product_service_module.get_products
 get_product_by_id = product_service_module.get_product_by_id
 update_product = product_service_module.update_product
 delete_product = product_service_module.delete_product
+upload_product_image_to_supabase = product_service_module.upload_product_image_to_supabase
 
 inventory_service_module = importlib.import_module("app.services.inventory-service")
 record_stock_in = inventory_service_module.record_stock_in
@@ -82,6 +83,13 @@ mark_alert_read = alert_service_module.mark_alert_read
 mark_all_alerts_read = alert_service_module.mark_all_alerts_read
 get_unread_count = alert_service_module.get_unread_count
 
+store_service_module = importlib.import_module("app.services.store-service")
+get_store_details = store_service_module.get_store_details
+update_store_details = store_service_module.update_store_details
+get_store_members = store_service_module.get_store_members
+invite_store_member = store_service_module.invite_store_member
+remove_store_member = store_service_module.remove_store_member
+
 __all__ = [
     "lookup_barcode",
     "upload_product_image",
@@ -92,6 +100,7 @@ __all__ = [
     "get_product_by_id",
     "update_product",
     "delete_product",
+    "upload_product_image_to_supabase",
     "record_stock_in",
     "record_stock_out",
     "record_adjustment",
@@ -138,4 +147,9 @@ __all__ = [
     "mark_alert_read",
     "mark_all_alerts_read",
     "get_unread_count",
+    "get_store_details",
+    "update_store_details",
+    "get_store_members",
+    "invite_store_member",
+    "remove_store_member",
 ]

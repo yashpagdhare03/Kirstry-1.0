@@ -36,6 +36,10 @@ UpdatePOSchema = supplier_schema.UpdatePOSchema
 alert_schema = importlib.import_module("app.schemas.alert-schema")
 AlertQuerySchema = alert_schema.AlertQuerySchema
 
+store_schema = importlib.import_module("app.schemas.store-schema")
+UpdateStoreSchema = store_schema.UpdateStoreSchema
+InviteStoreMemberSchema = store_schema.InviteStoreMemberSchema
+
 __all__ = [
     "CreateCategorySchema",
     "CreateProductSchema",
@@ -56,4 +60,6 @@ __all__ = [
     "CreatePOSchema",
     "UpdatePOSchema",
     "AlertQuerySchema",
+    "UpdateStoreSchema",
+    "InviteStoreMemberSchema",
 ]

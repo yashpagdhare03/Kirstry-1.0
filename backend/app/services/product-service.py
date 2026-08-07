@@ -5,6 +5,7 @@ Executes database queries strictly scoped by store_id.
 
 from typing import Dict, Any, List, Optional, Tuple
 from datetime import datetime
+import uuid
 from app.utils import get_supabase_client
 
 
@@ -54,6 +55,7 @@ def create_product(store_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
         "selling_price": data.get("selling_price"),
         "purchase_price": data.get("purchase_price"),
         "low_stock_threshold": data.get("low_stock_threshold", 10),
+        "image_url": data.get("image_url"),
         "is_active": True,
     }
     response = supabase.table("products").insert(payload).execute()
@@ -201,3 +203,21 @@ def delete_product(store_id: str, product_id: str) -> bool:
         .execute()
     )
     return bool(response.data)
+
+
+def upload_product_image_to_supabase(file_bytes: bytes, filename: str, content_type: str) -> str:
+    """
+    Uploads an image file to Supabase Storage bucket 'product-images' and returns the public URL.
+    """
+    supabase = get_supabase_client()
+    ext = filename.rsplit(".", 1)[-1] if "." in filename else "jpg"
+    unique_path = f"products/{uuid.uuid4().hex}.{ext}"
+
+    res = supabase.storage.from_("product-images").upload(
+        path=unique_path,
+        file=file_bytes,
+        file_options={"content-type": content_type}
+    )
+
+    public_url = supabase.storage.from_("product-images").get_public_url(unique_path)
+    return public_url

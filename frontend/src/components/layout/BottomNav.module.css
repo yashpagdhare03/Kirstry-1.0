@@ -1,0 +1,82 @@
+.bottomNav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background-color: var(--bg-surface);
+  border-top: 1px solid var(--border-default);
+  z-index: 100;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+@media (max-width: 768px) {
+  .bottomNav {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+}
+
+.tabItem {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  height: 100%;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 500;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+  touch-action: manipulation;
+}
+
+.tabItem:hover, .tabItem:active {
+  color: var(--text-primary);
+}
+
+.active {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.morePopover {
+  background-color: var(--bg-surface-alt);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: 8px;
+  width: 220px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 1000;
+}
+
+.popoverItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  touch-action: manipulation;
+}
+
+.popoverItem:hover, .popoverItem:active {
+  color: var(--text-primary);
+  background-color: var(--border-default);
+}

@@ -3,7 +3,7 @@
 # 11 — Layout & Navigation
 
 ## Status
-Not Started
+Completed
 
 ## Objective
 Implement the main app shell: desktop sidebar (240px fixed), top bar, mobile bottom navigation bar (5 icons), and responsive layout container.
@@ -24,10 +24,10 @@ Implement the main app shell: desktop sidebar (240px fixed), top bar, mobile bot
 4. Implement CSS module responsive breakpoints (`@media (max-width: 768px)`).
 
 ## Acceptance Criteria
-- [ ] Sidebar renders on desktop (`>=768px`) with active route highlighting
-- [ ] Bottom navigation renders on mobile (`<768px`) with 5 primary icons
-- [ ] Top bar displays current route title and user profile dropdown
-- [ ] Navigation links route correctly via React Router
+- [x] Sidebar renders on desktop (`>=768px`) with active route highlighting
+- [x] Bottom navigation renders on mobile (`<768px`) with 5 primary icons
+- [x] Top bar displays current route title and user profile dropdown
+- [x] Navigation links route correctly via React Router
 
 ## MCP Verification
 - Use `chrome-devtools-mcp` `resize_page` to test desktop (1440px), tablet (1024px), and mobile (375px) layouts
