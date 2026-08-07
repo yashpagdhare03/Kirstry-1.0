@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { authService, type AuthUser, type StoreSetupPayload } from '../services/auth';
 import { setStoreId, getStoreId } from '../services/api';
+import { supabase } from '../lib/supabase';
 
 interface AuthContextType {
   user: AuthUser | null;
@@ -11,7 +12,7 @@ interface AuthContextType {
   loading: boolean;
   login: (email: string, password: string) => Promise<boolean>;
   signup: (email: string, password: string, name?: string) => Promise<boolean>;
-  googleAuth: (idToken: string) => Promise<boolean>;
+  googleAuth: (idToken?: string) => Promise<boolean>;
   setupStore: (payload: StoreSetupPayload) => Promise<boolean>;
   logout: () => void;
 }
@@ -68,7 +69,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   });
 
   const [hasStore, setHasStore] = useState<boolean>(() => {
-    return Boolean(getStoreId() && getStoreId() !== '00000000-0000-0000-0000-000000000000');
+    const sid = getStoreId();
+    return Boolean(sid && sid !== '00000000-0000-0000-0000-000000000000');
   });
 
   const [loading, setLoading] = useState<boolean>(true);
@@ -100,6 +102,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     safeRemoveItem(REFRESH_TOKEN_KEY);
     safeRemoveItem(USER_KEY);
     safeRemoveItem(ROLE_KEY);
+    safeRemoveItem('kirstry_store_id');
+    try {
+      supabase.auth.signOut().catch(() => {});
+    } catch (e) {
+      // Ignore signOut errors
+    }
   };
 
   const fetchProfile = async () => {
@@ -123,10 +131,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setStoreId(res.data.store.id);
           setStoreIdState(res.data.store.id);
           setHasStore(true);
+        } else if (res.data.has_store === false) {
+          setHasStore(false);
         }
       }
     } catch (err) {
-      // If token verification fails in dev mode, keep local session
+      // Keep session if API temporary error
     } finally {
       setLoading(false);
     }
@@ -134,19 +144,38 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     fetchProfile();
+
+    // Listen for Supabase OAuth redirects or session updates
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session && session.access_token) {
+        const u: AuthUser = {
+          id: session.user.id,
+          email: session.user.email || '',
+          name: session.user.user_metadata?.full_name || session.user.email?.split('@')[0],
+        };
+        saveAuthSession(session.access_token, session.refresh_token, u);
+        fetchProfile();
+      }
+    });
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
       const res = await authService.login({ email, password });
       if (res.success && res.data) {
-        const { user: u, session: s } = res.data;
-        saveAuthSession(s.access_token, s.refresh_token, u, 'owner', getStoreId());
+        const { user: u, session: s, store } = res.data;
+        const sid = store?.id || getStoreId();
+        saveAuthSession(s.access_token, s.refresh_token, u, (u.role as 'owner' | 'staff') || 'owner', sid);
+        setHasStore(Boolean(store && store.id));
         return true;
       }
     } catch (err) {
-      // Fallback dev login
-      saveAuthSession('mock-owner-jwt', 'mock-owner-refresh', { id: 'user-owner-1', email, name: 'Yash Owner' }, 'owner', getStoreId());
+      // Fallback in case of server offline in dev mode
+      saveAuthSession('mock-owner-jwt', 'mock-owner-refresh', { id: 'user-owner-1', email, name: 'Store Owner' }, 'owner', getStoreId());
       return true;
     }
     return false;
@@ -169,19 +198,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return false;
   };
 
-  const googleAuth = async (idToken: string): Promise<boolean> => {
+  const googleAuth = async (idToken?: string): Promise<boolean> => {
     try {
-      const res = await authService.googleAuth(idToken);
-      if (res.success && res.data) {
-        const { user: u, session: s } = res.data;
-        saveAuthSession(s.access_token, s.refresh_token, u, 'owner', getStoreId());
-        return true;
+      if (idToken) {
+        const res = await authService.googleAuth(idToken);
+        if (res.success && res.data) {
+          const { user: u, session: s, store } = res.data;
+          saveAuthSession(s.access_token, s.refresh_token, u, 'owner', store?.id);
+          setHasStore(Boolean(store && store.id));
+          return true;
+        }
       }
+      // Trigger Supabase Google OAuth redirect
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: window.location.origin,
+        },
+      });
+      if (error) throw error;
+      return true;
     } catch (err) {
       saveAuthSession('mock-owner-jwt', 'mock-google-refresh', { id: 'user-google-1', email: 'google@yashstore.com', name: 'Google User' }, 'owner', getStoreId());
       return true;
     }
-    return false;
   };
 
   const setupStore = async (payload: StoreSetupPayload): Promise<boolean> => {

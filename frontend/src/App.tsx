@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/auth/LoginPage';
 import { SignupPage } from './pages/auth/SignupPage';
 import { StoreSetupPage } from './pages/auth/StoreSetupPage';
@@ -40,7 +41,8 @@ export default function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          {/* Public Unauthenticated Auth Routes */}
+          {/* Public Landing & Auth Routes */}
+          <Route path="/welcome" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
 

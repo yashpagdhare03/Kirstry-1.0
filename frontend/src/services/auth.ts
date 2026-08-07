@@ -16,6 +16,8 @@ export interface AuthSession {
 export interface AuthResponse {
   user: AuthUser;
   session: AuthSession;
+  store?: any;
+  has_store?: boolean;
 }
 
 export interface SignUpPayload {
@@ -58,6 +60,6 @@ export const authService = {
   },
 
   async getMe() {
-    return api.get<{ user: AuthUser; store: any }>('/auth/me');
+    return api.get<{ user: AuthUser; store: any; has_store?: boolean }>('/auth/me');
   },
 };

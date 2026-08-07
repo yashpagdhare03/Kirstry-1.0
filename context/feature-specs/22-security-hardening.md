@@ -3,7 +3,7 @@
 # 22 — Security Hardening & Final Audit
 
 ## Status
-Not Started
+Completed
 
 ## Objective
 Harden application security across backend and frontend, conduct complete store_id query audit, set up PWA service worker, and verify end-to-end functionality.
@@ -26,10 +26,10 @@ Security Enhancements:
 3. Conduct grep check across `backend/app/services/*.py` to ensure every SQL query includes `WHERE store_id = ...`.
 
 ## Acceptance Criteria
-- [ ] Excessive API calls hit rate limit and return HTTP 429 Too Many Requests
-- [ ] Every backend query is verified to enforce `store_id` isolation
-- [ ] PWA manifest is valid and service worker registers for offline support
-- [ ] Full end-to-end user flow (Signup -> Stock-in -> Bill POS -> Invoice -> Khata -> Analytics) executes cleanly with passing tests
+- [x] Excessive API calls hit rate limit and return HTTP 429 Too Many Requests
+- [x] Every backend query is verified to enforce `store_id` isolation
+- [x] PWA manifest is valid and service worker registers for offline support
+- [x] Full end-to-end user flow (Signup -> Stock-in -> Bill POS -> Invoice -> Khata -> Analytics) executes cleanly with passing tests
 
 ## MCP Verification
 - Use `chrome-devtools-mcp` `lighthouse_audit` to verify PWA and security performance scores
