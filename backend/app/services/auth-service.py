@@ -6,8 +6,12 @@ Handles sign up, sign in, OAuth token exchange, store creation wizard, token ref
 from typing import Dict, Any, Optional
 from datetime import datetime, timezone
 import uuid
+import importlib
 from app.utils import get_supabase_client
-from app.services import get_store_details, DEFAULT_STORES
+
+
+def _get_store_service():
+    return importlib.import_module("app.services.store-service")
 
 
 def sign_up_user(data: Dict[str, Any]) -> Dict[str, Any]:
@@ -59,6 +63,7 @@ def sign_in_user(data: Dict[str, Any]) -> Dict[str, Any]:
     password = data["password"]
 
     supabase = get_supabase_client()
+    store_service = _get_store_service()
     try:
         res = supabase.auth.sign_in_with_password({"email": email, "password": password})
 
@@ -73,7 +78,7 @@ def sign_in_user(data: Dict[str, Any]) -> Dict[str, Any]:
             store_data = None
             if mem_res.data and len(mem_res.data) > 0:
                 sid = mem_res.data[0].get("store_id")
-                store_data = get_store_details(sid)
+                store_data = store_service.get_store_details(sid)
 
             return {
                 "user": {
@@ -103,6 +108,7 @@ def authenticate_google_user(data: Dict[str, Any]) -> Dict[str, Any]:
         raise ValueError("Google ID token required.")
 
     supabase = get_supabase_client()
+    store_service = _get_store_service()
     try:
         res = supabase.auth.sign_in_with_id_token({"provider": "google", "token": id_token})
 
@@ -116,7 +122,7 @@ def authenticate_google_user(data: Dict[str, Any]) -> Dict[str, Any]:
             store_data = None
             if mem_res.data and len(mem_res.data) > 0:
                 sid = mem_res.data[0].get("store_id")
-                store_data = get_store_details(sid)
+                store_data = store_service.get_store_details(sid)
 
             return {
                 "user": {
@@ -184,7 +190,8 @@ def setup_user_store(user_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
     except Exception as e:
         print(f"Store member insert info: {e}")
 
-    DEFAULT_STORES[new_store_id] = store_record
+    store_service = _get_store_service()
+    store_service.DEFAULT_STORES[new_store_id] = store_record
     store_record["store_id"] = new_store_id
     return store_record
 
@@ -230,7 +237,8 @@ def get_user_profile(user_id: Optional[str], store_id: Optional[str], role: str 
         except Exception:
             pass
 
-    store_data = get_store_details(actual_store_id) if actual_store_id else None
+    store_service = _get_store_service()
+    store_data = store_service.get_store_details(actual_store_id) if actual_store_id else None
 
     return {
         "user": {
