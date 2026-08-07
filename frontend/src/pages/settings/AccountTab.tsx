@@ -1,6 +1,8 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, Button } from '../../components/shared';
 import { User, LogOut, RefreshCw } from 'lucide-react';
+import { useAuth } from '../../hooks/useAuth';
 import styles from './SettingsPages.module.css';
 
 interface AccountTabProps {
@@ -9,10 +11,13 @@ interface AccountTabProps {
 }
 
 export const AccountTab: React.FC<AccountTabProps> = ({ userRole, onRoleChange }) => {
+  const navigate = useNavigate();
+  const { user, storeId, logout } = useAuth();
+
   const handleLogout = () => {
     if (window.confirm('Are you sure you want to log out of Kirstry POS?')) {
-      alert('Logged out successfully. Redirecting to login...');
-      window.location.reload();
+      logout();
+      navigate('/login');
     }
   };
 
@@ -40,10 +45,10 @@ export const AccountTab: React.FC<AccountTabProps> = ({ userRole, onRoleChange }
 
             <div>
               <h2 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>
-                Yash Pagdhare
+                {user?.name || user?.email?.split('@')[0] || 'Store Merchant'}
               </h2>
               <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '2px' }}>
-                owner@yashstore.com
+                {user?.email || 'merchant@kirstrypos.com'}
               </div>
               <div style={{ marginTop: '6px' }}>
                 <span
@@ -71,10 +76,10 @@ export const AccountTab: React.FC<AccountTabProps> = ({ userRole, onRoleChange }
             }}
           >
             <div>
-              <strong>Store ID:</strong> <span className="font-mono">00000000-0000-0000-0000-000000000001</span>
+              <strong>Store Tenancy ID:</strong> <span className="font-mono">{storeId || 'Default Store'}</span>
             </div>
             <div>
-              <strong>Active Branch:</strong> Yash Kirana Main Branch
+              <strong>Authenticated Role:</strong> {userRole === 'owner' ? 'Owner / Administrator' : 'Cashier / Staff'}
             </div>
           </div>
 

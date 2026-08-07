@@ -3,7 +3,7 @@
 # 20 — Auth Backend Integration
 
 ## Status
-Not Started
+Completed
 
 ## Objective
 Implement Supabase Auth integration in Flask: JWT verification middleware, auth decorators, signup/login flow, and store_id extraction from token.
@@ -35,11 +35,11 @@ Endpoints:
 2. Update all route files (`03-09`, `19`) to replace header parsing with `g.store_id` and apply `@require_auth`.
 
 ## Acceptance Criteria
-- [ ] Signup and Login via email/password return valid JWT tokens
-- [ ] Google OAuth token exchange succeeds
-- [ ] Protected endpoints reject unauthenticated requests with HTTP 401
-- [ ] Owner-only endpoints reject staff members with HTTP 403
-- [ ] All API queries automatically scope by `g.store_id` from verified token
+- [x] Signup and Login via email/password return valid JWT tokens
+- [x] Google OAuth token exchange succeeds
+- [x] Protected endpoints reject unauthenticated requests with HTTP 401
+- [x] Owner-only endpoints reject staff members with HTTP 403
+- [x] All API queries automatically scope by `g.store_id` from verified token
 
 ## MCP Verification
 - Use `supabase` MCP to verify auth user records

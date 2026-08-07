@@ -3,7 +3,7 @@
 # 19 — Settings & Store Management Page
 
 ## Status
-Not Started
+Completed
 
 ## Objective
 Implement store profile management, staff member invites, and account settings. The layout MUST be built with a **Mobile-First Responsive Design**, providing stacked, touch-optimized settings forms on mobile screens (`<768px`) that scale cleanly to desktop settings panels (`>=768px`).
@@ -31,11 +31,11 @@ Frontend pages:
 4. Apply mobile-first CSS modules with responsive breakpoints (`@media (min-width: 768px)`).
 
 ## Acceptance Criteria
-- [ ] Mobile-First Responsive Design: Settings tabs, store profile forms, and staff management lists adapt seamlessly to mobile viewports (<768px) and expand on desktop screens (>=768px)
-- [ ] Store owners can update store name, address, and GSTIN
-- [ ] Store owners can invite staff members by email and revoke staff access
-- [ ] Staff members see store profile and staff management as read-only
-- [ ] Account tab shows current user details and working logout button
+- [x] Mobile-First Responsive Design: Settings tabs, store profile forms, and staff management lists adapt seamlessly to mobile viewports (<768px) and expand on desktop screens (>=768px)
+- [x] Store owners can update store name, address, and GSTIN
+- [x] Store owners can invite staff members by email and revoke staff access
+- [x] Staff members see store profile and staff management as read-only
+- [x] Account tab shows current user details and working logout button
 
 ## MCP Verification
 - Use `postman-mcp-server` to test store settings and staff management endpoints

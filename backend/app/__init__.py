@@ -4,6 +4,8 @@ Flask Application Factory for Kirstry backend.
 
 from flask import Flask
 from flask_cors import CORS
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from app.config import Config
 from app.utils import register_error_handlers
 from app.routes import (
@@ -17,6 +19,14 @@ from app.routes import (
     analytics_bp,
     alert_bp,
     store_bp,
+    auth_bp,
+)
+
+# Global Limiter instance
+limiter = Limiter(
+    key_func=get_remote_address,
+    default_limits=["200 per minute"],
+    storage_uri="memory://",
 )
 
 
@@ -27,12 +37,23 @@ def create_app(config_class=Config) -> Flask:
     app = Flask(__name__)
     app.config.from_object(config_class)
 
+    # Initialize Limiter
+    limiter.init_app(app)
+
     # Configure CORS to allow Vite dev server
     CORS(
         app,
         resources={r"/api/*": {"origins": ["http://localhost:5173", "http://127.0.0.1:5173"]}},
         supports_credentials=True,
     )
+
+    # Inject Security Headers
+    @app.after_request
+    def set_security_headers(response):
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["X-Frame-Options"] = "DENY"
+        response.headers["X-XSS-Protection"] = "1; mode=block"
+        return response
 
     # Register global error handlers
     register_error_handlers(app)
@@ -48,5 +69,6 @@ def create_app(config_class=Config) -> Flask:
     app.register_blueprint(analytics_bp)
     app.register_blueprint(alert_bp)
     app.register_blueprint(store_bp)
+    app.register_blueprint(auth_bp)
 
     return app

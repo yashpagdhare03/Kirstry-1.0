@@ -141,17 +141,92 @@ Update this file after every meaningful implementation change.
   - `npm run build` completed cleanly with 0 errors.
   - Pushed commit `5b39cf6` to GitHub branch `frontend`.
 
+### ✅ Feature 19: Settings & Store Management Page UI (`19-settings-page.md`) — *Completed 2026-08-07*
+- **Backend Store & Staff API (`store-routes.py`, `store-service.py`, `store-schema.py`)**:
+  - Implemented `/api/store` (GET/PUT), `/api/store/members` (GET), `/api/store/members/invite` (POST), and `/api/store/members/<id>` (DELETE) with owner self-deletion protection (HTTP 400).
+- **Typed Store Service (`store.ts`)**:
+  - Built [`frontend/src/services/store.ts`](file:///Users/thunder/Desktop/Kirstry-1.0/frontend/src/services/store.ts) API client.
+- **Settings Page & 3 Tab Views**:
+  - `SettingsPage` (`/settings`): Tabbed container with horizontal scroll navigation (Store Profile | Staff Management | My Account).
+  - `StoreProfileTab`: Form for updating Store Name, Address, GSTIN, and Phone (read-only for staff users).
+  - `StaffManagementTab`: Staff invitation form and member directory list with access revocation buttons.
+  - `AccountTab`: Logged-in user profile details, role badge (`Store Owner` / `Staff`), role switcher preview mode, and working Logout button.
+- **Verification & Builds**:
+  - Backend `pytest` passed 37/37 unit tests (including `test_store.py`).
+  - Frontend `vitest` passed 11/11 tests (including `SettingsPage.test.tsx`).
+  - `npm run build` completed cleanly with 0 errors.
+  - Pushed commit `4e87102` to GitHub branch `frontend`.
+
+### ✅ Feature 20: Auth Backend Integration & Middleware (`20-auth-backend.md`) — *Completed 2026-08-07*
+- **Auth Service & Schemas (`auth-service.py`, `auth-schema.py`)**:
+  - Implemented signup, login, Google OAuth ID token exchange, store setup wizard, token refresh, and user profile retrieval.
+- **Auth Middleware & Decorators (`auth-middleware.py`)**:
+  - Built `@require_auth` (Bearer JWT verification & `g` context population) and `@require_owner` (HTTP 403 staff rejection).
+- **Auth Routes (`auth-routes.py`)**:
+  - Registered `/api/auth/signup`, `/api/auth/login`, `/api/auth/google`, `/api/auth/store-setup`, `/api/auth/refresh`, and `/api/auth/me`.
+- **Verification & Builds**:
+  - Backend `pytest` passed 45/45 unit tests (including 8 tests in `test_auth.py`).
+  - Frontend `vitest` passed 11/11 tests.
+  - Pushed commit `a1af705` to GitHub branch `frontend`.
+
+### ✅ Feature 21: Auth Frontend UI, Context & Guards (`21-auth-frontend.md`) — *Completed 2026-08-07*
+- **Typed Auth Service & Context (`auth.ts`, `AuthContext.tsx`, `useAuth.ts`)**:
+  - Created React Auth Context managing user session, tokens, store tenancy, role state, and `localStorage` session persistence.
+- **Route Guard (`ProtectedRoute.tsx`)**:
+  - Built `ProtectedRoute` component redirecting unauthenticated users to `/login` and unconfigured users to `/store-setup`.
+- **3 Responsive Auth Screens & OAuth Button**:
+  - `LoginPage` (`/login`): Centered single-column login card with email/password form and Google OAuth button.
+  - `SignupPage` (`/signup`): Account registration screen with Google OAuth button.
+  - `StoreSetupPage` (`/store-setup`): Initial store onboarding wizard for new store owners.
+  - `GoogleSignInButton`: Touch-friendly Google sign-in trigger component.
+- **Verification & Builds**:
+  - Frontend `vitest` passed 12/12 tests (including `LoginPage.test.tsx`).
+  - `npm run build` completed cleanly with 0 errors.
+  - Pushed commit `0a033fc` to GitHub branch `frontend`.
+
+### ✅ Feature 22: Security Hardening & Final Audit (`22-security-hardening.md`) — *Completed 2026-08-07*
+- **Backend Security & Rate-Limiting (`__init__.py`, `security.py`)**:
+  - Integrated `Flask-Limiter` for route rate-limiting and injected HTTP security response headers (`X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `X-XSS-Protection: 1; mode=block`).
+  - Created string input HTML tag sanitization helper `sanitize_input_string()`.
+- **Multi-Tenancy `store_id` Query Audit**:
+  - Conducted complete audit across all 11 backend service modules to verify 100% tenant query isolation.
+- **Frontend PWA Integration & Security (`manifest.json`, `sw.js`, `index.html`)**:
+  - Configured Kirana POS PWA web app manifest (`manifest.json`), offline caching service worker (`sw.js`), and CSP meta security headers.
+- **Verification & Builds**:
+  - Backend `pytest` passed 48/48 unit tests (including `test_security.py`).
+  - Frontend `vitest` passed 12/12 tests.
+  - `npm run build` completed cleanly with 0 errors.
+  - Pushed commit `3d406a9` to GitHub branch `frontend`.
+
+### ✅ Router Restructuring, PublicOnlyRoute, OAuth Callback & RLS Security — *Completed 2026-08-07*
+- **Public Root (`/`) & Protected Dashboard (`/dashboard`)**:
+  - Restructured `App.tsx` router so `/` renders `<LandingPage />` for unauthenticated visitors.
+  - Moved protected store application routes under `/dashboard` and sub-routes (`/billing`, `/products`, `/inventory`, `/khata`, `/suppliers`, `/analytics`, `/settings`, `/alerts`) protected by `<ProtectedRoute>`.
+- **Public Only Route Guard (`PublicOnlyRoute.tsx`)**:
+  - Built `PublicOnlyRoute` wrapping `/login` and `/signup` to automatically redirect authenticated users to `/dashboard`.
+- **Supabase OAuth Callback (`AuthCallbackPage.tsx`, `/auth/callback`) & Sync Profile**:
+  - Built `<AuthCallbackPage />` handling Google OAuth redirect callbacks from `https://cssmoybkdzoxbntcrzfj.supabase.co/auth/v1/callback`.
+  - Added Flask `POST /api/auth/sync-profile` endpoint to synchronize user profile and store membership in PostgreSQL `store_members` table upon OAuth login.
+- **Flask JWT Secret Verification & RLS Migration Script**:
+  - Added PyJWT secret verification in `auth-middleware.py` via `SUPABASE_JWT_SECRET` (`jwt.decode(token, SUPABASE_JWT_SECRET, algorithms=["HS256"])`).
+  - Generated `backend/migrations/01_enable_rls.sql` SQL script enabling Row Level Security (RLS) policies on all database tables.
+- **Verification & Builds**:
+  - Backend `pytest` passed **48/48 unit tests**.
+  - Frontend `vitest` passed **12/12 tests**.
+  - `npm run build` completed cleanly with 0 errors.
+  - Pushed commit `79dc469` to GitHub branch `frontend`.
+
 ---
 
 ## In Progress
 
-- None (Feature 18 complete, ready for Feature 19 Store Settings & Alerts Pages)
+- None (All routing, auth callback, and security requirements complete)
 
 ---
 
 ## Next Up
 
-1. `19-settings-alerts-pages.md` — Store settings, user profile, notification center
+- 🎉 **Project Complete**: Merge `frontend` into `main` and deploy to production hosting (Vercel / Netlify + Render / Railway).
 
 ---
 

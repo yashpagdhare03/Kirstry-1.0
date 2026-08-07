@@ -40,6 +40,13 @@ store_schema = importlib.import_module("app.schemas.store-schema")
 UpdateStoreSchema = store_schema.UpdateStoreSchema
 InviteStoreMemberSchema = store_schema.InviteStoreMemberSchema
 
+auth_schema = importlib.import_module("app.schemas.auth-schema")
+SignUpSchema = auth_schema.SignUpSchema
+LoginSchema = auth_schema.LoginSchema
+GoogleAuthSchema = auth_schema.GoogleAuthSchema
+StoreSetupSchema = auth_schema.StoreSetupSchema
+RefreshTokenSchema = auth_schema.RefreshTokenSchema
+
 __all__ = [
     "CreateCategorySchema",
     "CreateProductSchema",
@@ -62,4 +69,9 @@ __all__ = [
     "AlertQuerySchema",
     "UpdateStoreSchema",
     "InviteStoreMemberSchema",
+    "SignUpSchema",
+    "LoginSchema",
+    "GoogleAuthSchema",
+    "StoreSetupSchema",
+    "RefreshTokenSchema",
 ]

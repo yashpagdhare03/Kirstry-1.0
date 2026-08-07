@@ -1,18 +1,36 @@
 import type { ApiResponse } from '../utils/types';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
-const DEFAULT_STORE_ID = '00000000-0000-0000-0000-000000000001';
-
 export function getStoreId(): string {
-  return localStorage.getItem('kirstry_store_id') || DEFAULT_STORE_ID;
+  try {
+    if (typeof localStorage !== 'undefined' && localStorage && typeof localStorage.getItem === 'function') {
+      return localStorage.getItem('kirstry_store_id') || '';
+    }
+  } catch (e) {
+    // Ignore storage errors
+  }
+  return '';
 }
 
 export function setStoreId(storeId: string): void {
-  localStorage.setItem('kirstry_store_id', storeId);
+  try {
+    if (typeof localStorage !== 'undefined' && localStorage && typeof localStorage.setItem === 'function') {
+      localStorage.setItem('kirstry_store_id', storeId);
+    }
+  } catch (e) {
+    // Ignore storage errors
+  }
 }
 
 export function getAuthToken(): string | null {
-  return localStorage.getItem('kirstry_auth_token');
+  try {
+    if (typeof localStorage !== 'undefined' && localStorage && typeof localStorage.getItem === 'function') {
+      return localStorage.getItem('kirstry_auth_token');
+    }
+  } catch (e) {
+    // Ignore storage errors
+  }
+  return null;
 }
 
 export interface RequestOptions extends RequestInit {
