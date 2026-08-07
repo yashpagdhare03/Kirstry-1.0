@@ -20,6 +20,20 @@ export const AuthCallbackPage: React.FC = () => {
           return;
         }
 
+        // Save session tokens to local storage so subsequent API requests pass Bearer header
+        localStorage.setItem('kirstry_auth_token', data.session.access_token);
+        if (data.session.refresh_token) {
+          localStorage.setItem('kirstry_refresh_token', data.session.refresh_token);
+        }
+        if (data.session.user) {
+          const u = {
+            id: data.session.user.id,
+            email: data.session.user.email || '',
+            name: data.session.user.user_metadata?.full_name || data.session.user.email?.split('@')[0],
+          };
+          localStorage.setItem('kirstry_user', JSON.stringify(u));
+        }
+
         // Sync user profile & store tenancy with backend
         try {
           const res = await authService.syncProfile();
@@ -36,6 +50,7 @@ export const AuthCallbackPage: React.FC = () => {
           // If sync endpoint succeeds with default or fallback profile
         }
 
+        if (fetchProfile) await fetchProfile();
         navigate('/dashboard', { replace: true });
       } catch (err) {
         setErrorMsg('An unexpected error occurred during sign-in.');
